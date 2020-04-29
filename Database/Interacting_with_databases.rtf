@@ -1,0 +1,563 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-Oblique;
+\f3\fmodern\fcharset0 Courier-Bold;\f4\fmodern\fcharset0 Courier;\f5\fswiss\fcharset0 ArialMT;
+\f6\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red35\green46\blue57;\red255\green255\blue255;\red62\green62\blue62;
+\red38\green38\blue38;\red246\green246\blue246;\red14\green114\blue164;\red14\green110\blue109;\red0\green0\blue0;
+\red246\green246\blue246;\red83\green83\blue83;\red52\green52\blue52;\red241\green241\blue241;\red52\green52\blue52;
+\red62\green62\blue62;}
+{\*\expandedcolortbl;;\cssrgb\c18039\c23922\c28627;\cssrgb\c100000\c100000\c100000;\cssrgb\c30980\c30980\c30980;
+\cssrgb\c20000\c20000\c20000;\cssrgb\c97255\c97255\c97255;\cssrgb\c0\c52549\c70196;\cssrgb\c0\c50196\c50196;\cssrgb\c0\c0\c0;
+\cssrgb\c97255\c97255\c97255;\cssrgb\c40000\c40000\c40000;\cssrgb\c26696\c26696\c26663;\cssrgb\c95686\c95686\c95686;\cssrgb\c26667\c26667\c26667;
+\cssrgb\c30980\c30980\c30980;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid202\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}}
+\margl1440\margr1440\vieww22340\viewh14140\viewkind0
+\deftab720
+\pard\pardeftab720\sl426\sa100\partightenfactor0
+
+\f0\b\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Primary Key\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl400\partightenfactor0
+\ls1\ilvl0
+\f1\b0 \cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 The primary key is the unique identifier for the entire row, referring to one\'a0
+\f2\i or more
+\f1\i0 \'a0columns.\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 If there are more multiple columns for the primary key, then the set of primary key columns is known as a\'a0
+\f0\b composite key
+\f1\b0 .\cb1 \
+\pard\pardeftab720\sl426\sa100\partightenfactor0
+
+\f0\b \cf2 \cb3 \strokec2 Foreign Key\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl400\partightenfactor0
+\ls2\ilvl0
+\f1\b0 \cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 A primary key in another (foreign) table.\cb1 \
+\ls2\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Foreign keys are used to map relationships between tables.\cb1 \
+\pard\tx720\pardeftab720\sl400\partightenfactor0
+\cf4 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs27 \cf5 \strokec5 INSERT
+\f4\b0 \cb6  
+\f3\b \cb1 INTO
+\f4\b0 \cb6  
+\f3\b \cb1 table
+\f4\b0 \cb6  (column1, column2, \'85)\
+
+\f3\b \cb1 VALUES
+\f4\b0 \cb6 \
+	(value1, value2, \'85),\
+	(value1, value2, \'85) ,...;\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf5 \
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b \cf5 \cb1 UPDATE
+\f4\b0 \cb6  
+\f3\b \cb1 table
+\f4\b0 \cb6 \
+
+\f3\b \cb1 SET
+\f4\b0 \cb6  column1 = value1,\
+    column2 = value2 ,...\
+
+\f3\b \cb1 WHERE
+\f4\b0 \cb6 \
+	condition;\
+\
+\
+
+\f3\b \cb1 DELETE
+\f4\b0 \cb6  
+\f3\b \cb1 FROM
+\f4\b0 \cb6  
+\f3\b \cb1 table
+\f4\b0 \cb6 \
+
+\f3\b \cb1 WHERE
+\f4\b0 \cb6  condition;\
+\
+\
+
+\f3\b \cb1 CREATE
+\f4\b0 \cb6  
+\f3\b \cb1 TABLE
+\f4\b0 \cb6  
+\f3\b \cb1 account
+\f4\b0 \cb6 (\
+	user_id \cf7 \cb1 \strokec7 serial\cf5 \cb6 \strokec5  PRIMARY 
+\f3\b \cb1 KEY
+\f4\b0 \cb6 ,\
+	username \cf7 \cb1 \strokec7 VARCHAR\cf5 \cb6 \strokec5  (\cf8 \cb1 \strokec8 50\cf5 \cb6 \strokec5 ) 
+\f3\b \cb1 UNIQUE
+\f4\b0 \cb6  
+\f3\b \cb1 NOT
+\f4\b0 \cb6  \cf8 \cb1 \strokec8 NULL\cf5 \cb6 \strokec5 ,\
+	
+\f3\b \cb1 password
+\f4\b0 \cb6  \cf7 \cb1 \strokec7 VARCHAR\cf5 \cb6 \strokec5  (\cf8 \cb1 \strokec8 50\cf5 \cb6 \strokec5 ) 
+\f3\b \cb1 NOT
+\f4\b0 \cb6  \cf8 \cb1 \strokec8 NULL\cf5 \cb6 \strokec5 ,\
+	email \cf7 \cb1 \strokec7 VARCHAR\cf5 \cb6 \strokec5  (\cf8 \cb1 \strokec8 355\cf5 \cb6 \strokec5 ) 
+\f3\b \cb1 UNIQUE
+\f4\b0 \cb6  
+\f3\b \cb1 NOT
+\f4\b0 \cb6  \cf8 \cb1 \strokec8 NULL\cf5 \cb6 \strokec5 ,\
+	created_on \cf7 \cb1 \strokec7 TIMESTAMP\cf5 \cb6 \strokec5  
+\f3\b \cb1 NOT
+\f4\b0 \cb6  \cf8 \cb1 \strokec8 NULL\cf5 \cb6 \strokec5 ,\
+	last_login \cf7 \cb1 \strokec7 TIMESTAMP\cf5 \cb6 \strokec5 \
+);\
+\
+\
+
+\f3\b \cb1 ALTER
+\f4\b0 \cb6  
+\f3\b \cb1 TABLE
+\f4\b0 \cb6  table_name 
+\f3\b \cb1 action
+\f4\b0 \cb6 ;\
+\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b \cf5 DROP
+\f4\b0  
+\f3\b TABLE
+\f4\b0  [
+\f3\b IF
+\f4\b0  
+\f3\b EXISTS
+\f4\b0 ] table_name [
+\f3\b CASCADE
+\f4\b0  | RESTRICT];\
+\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b \cf5 \cb1 ALTER
+\f4\b0 \cb6  
+\f3\b \cb1 TABLE
+\f4\b0 \cb6  table_name\
+
+\f3\b \cb1 ADD
+\f4\b0 \cb6  
+\f3\b \cb1 COLUMN
+\f4\b0 \cb6  new_column_name data_type;\
+\
+\
+
+\f3\b \cb1 ALTER
+\f4\b0 \cb6  
+\f3\b \cb1 TABLE
+\f4\b0 \cb6  table_name \
+
+\f3\b \cb1 DROP
+\f4\b0 \cb6  
+\f3\b \cb1 COLUMN
+\f4\b0 \cb6  column_name;\
+\
+\
+
+\f3\b\fs36 \ul Inner Join: 
+\f4\b0\fs27 \ulnone \
+\pard\pardeftab720\sl340\partightenfactor0
+
+\fs30 \cf9 \cb3 \strokec9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+INNER JOIN basket_b b ON a.fruit = b.fruit;\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs27 \cf5 \cb6 \strokec5 \
+\
+
+\f3\b\fs36 \ul Left Join: 
+\f4\b0\fs27 \ulnone \
+\pard\pardeftab720\sl340\partightenfactor0
+
+\fs30 \cf9 \cb3 \strokec9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+LEFT JOIN basket_b b ON a.fruit = b.fruit;\
+\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 \outl0\strokewidth0 Left Outer Join:
+\f4\b0\fs30 \cf9 \cb3 \ulnone \outl0\strokewidth0 \strokec9 \
+\pard\pardeftab720\sl340\partightenfactor0
+\cf9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+LEFT JOIN basket_b b ON a.fruit = b.fruit\
+WHERE b.id IS NULL;\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 \outl0\strokewidth0 Left Outer Join - only rows from the left table:
+\f4\b0\fs30 \cf9 \cb3 \ulnone \outl0\strokewidth0 \strokec9 \
+\pard\pardeftab720\sl340\partightenfactor0
+\cf9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+RIGHT JOIN basket_b b ON a.fruit = b.fruit;\
+\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 \outl0\strokewidth0 Right Outer Join:
+\f4\b0\fs30 \cf9 \cb3 \ulnone \outl0\strokewidth0 \strokec9 \
+\pard\pardeftab720\sl340\partightenfactor0
+\cf9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+RIGHT JOIN basket_b b ON a.fruit = b.fruit\
+WHERE a.id IS NULL;\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 \outl0\strokewidth0 Right Outer Join - only rows from the right table:
+\f4\b0\fs30 \cf9 \cb3 \ulnone \outl0\strokewidth0 \strokec9 \
+\pard\pardeftab720\sl340\partightenfactor0
+\cf9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+FULL OUTER JOIN basket_b b ON a.fruit = b.fruit;\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs27 \cf5 \cb6 \strokec5 \
+\pard\pardeftab720\sl340\partightenfactor0
+
+\fs30 \cf9 \cb3 \outl0\strokewidth0 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 Full Outer Join
+\f4\b0\fs27 \cb6 \ulnone \outl0\strokewidth0 \strokec5 \
+\pard\pardeftab720\sl340\partightenfactor0
+
+\fs30 \cf9 \cb3 \strokec9 SELECT\
+    a.id id_a,\
+    a.fruit fruit_a,\
+    b.id id_b,\
+    b.fruit fruit_b\
+FROM\
+    basket_a a\
+FULL JOIN basket_b b ON a.fruit = b.fruit\
+	WHERE a.id IS NULL OR b.id IS NULL;\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf9 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 \outl0\strokewidth0 Full Outer Join - only rows unique to both tables\
+\
+\
+Group By:\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs27 \cf5 \cb1 \ulnone \outl0\strokewidth0 \strokec5 SELECT
+\f4\b0 \cb6  \
+   column_1, \
+   column_2,\
+   aggregate_function(column_3)\
+
+\f3\b \cb1 FROM
+\f4\b0 \cb6  \
+   table_name\
+
+\f3\b \cb1 GROUP
+\f4\b0 \cb6  
+\f3\b \cb1 BY
+\f4\b0 \cb6  \
+   column_1,\
+   column_2;\
+\
+\
+\
+\pard\pardeftab720\sl340\partightenfactor0
+
+\f1\fs28 \cf9 \cb3 \strokec9 The\'a0
+\f4 \cf11 \strokec11 timestamp
+\f1 \cf9 \strokec9 \'a0data type allows you to store both\'a0{\field{\*\fldinst{HYPERLINK "https://www.postgresqltutorial.com/postgresql-date/"}}{\fldrslt date}}\'a0and time\
+
+\fs30 The\'a0
+\f4\fs21\fsmilli10800 \cf11 \strokec11 timestamptz
+\f1\fs30 \cf9 \strokec9 \'a0data is the timestamp with time zone
+\f4\fs27 \cf5 \cb6 \strokec5 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf5 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f3\b\fs36 \cf5 \cb10 \ul \ulc5 \outl0\strokewidth0 Network Ports:
+\f4\b0\fs27 \cb6 \ulnone \outl0\strokewidth0 \strokec5 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrs\brdrw20\brdrcf9 \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \cb1 \strokec12 Port Number
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl320\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Usage
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 20
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 File Transfer Protocol (FTP) Data Transfer
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 21
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 File Transfer Protocol (FTP) Command Control
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 22
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Secure Shell (SSH)
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 23
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Telnet - Remote login service, unencrypted text messages
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 25
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Simple Mail Transfer Protocol (SMTP) E-mail Routing
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 53
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Domain Name System (DNS) service
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 80
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Hypertext Transfer Protocol (HTTP) used in World Wide Web
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 110
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Post Office Protocol (POP3) used by e-mail clients to retrieve e-mail from a server
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 119
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Network News Transfer Protocol (NNTP)
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 123
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Network Time Protocol (NTP)
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 143
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Internet Message Access Protocol (IMAP) Management of Digital Mail
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 161
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Simple Network Management Protocol (SNMP)
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 194
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 Internet Relay Chat (IRC)
+\f6\fs36 \strokec12 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trcbpat13 \trwWidth12480\trftsWidth3 \tamart540 \tamarb540 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1884\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrs\brdrw20\brdrcf9 \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth10575\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrs\brdrw20\brdrcf9 \clbrdrr\brdrs\brdrw20\brdrcf9 \clpadt133 \clpadl133 \clpadb133 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 443
+\f6\fs36 \strokec12 \cell 
+\pard\intbl\itap1\pardeftab720\sl340\sa0\partightenfactor0
+
+\f5\fs29\fsmilli14667 \cf3 \strokec12 HTTP Secure (HTTPS) HTTP over TLS/SSL
+\f6\fs36 \cf14 \strokec14 \
+
+\f4\fs30 \cf9 \cb3 \strokec9 \cell \lastrow\row
+\pard\tx720\pardeftab720\sl400\partightenfactor0
+
+\f1\fs28 \cf15 \cb1 \outl0\strokewidth0 \
+\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl400\partightenfactor0
+\ls3\ilvl0
+\fs24 \cf4 \cb3 \kerning1\expnd0\expndtw0 {\listtext	
+\fs28 \uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 TCP/IP is\'a0
+\f0\b connection-based
+\f1\b0 , meaning all communications between parties are arranged over a connection. A connection is established before any data transmission begins.\cb1 \
+\ls3\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Over TCP/IP, we'll\'a0
+\f2\i always
+\f1\i0 \'a0need to\'a0
+\f2\i establish a connection
+\f1\i0 \'a0between clients and servers in order to enable communications. Moreover:\
+\pard\tx940\tx1440\pardeftab720\li1440\fi-1440\sl400\partightenfactor0
+\ls3\ilvl1\cf4 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Deliveries over the connection are\'a0
+\f0\b error-checked
+\f1\b0 : if packets arrive damaged or lost, then they are resent (known as\'a0
+\f2\i retransmission
+\f1\i0 ).\cb1 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl400\partightenfactor0
+\ls3\ilvl0\cf4 \cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Connecting starts a\'a0
+\f0\b session
+\f1\b0 . Ending the connection ends the session.\cb1 \
+\ls3\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 In a database session, many\'a0
+\f0\b transactions
+\f1\b0 \'a0can occur during a given session. Each transaction does work to commit changes to the database (updating, inserting, or deleting records).\cb1 \
+\pard\tx720\pardeftab720\sl400\partightenfactor0
+\cf4 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl400\partightenfactor0
+\ls4\ilvl0\cf4 \cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Databases are interacted using client-server interactions, over a network\cb1 \
+\ls4\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Postgres uses TCP/IP to be interacted with, which is connection-based\cb1 \
+\ls4\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 We interact with databases like Postgres during sessions\cb1 \
+\ls4\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec4 Sessions have transactions that commit work to the database\cb1 \
+\pard\tx720\pardeftab720\sl400\partightenfactor0
+
+\fs24 \cf4 \
+\
+Atomicity: the entire transaction takes place at once or doesn\'92t happen at all\
+Consistency: the database must be consistent before and after the transaction\
+Isolation: Multiple transactions occur independently without interference\
+Durability: the changes of a successful transaction occurs even if the system failure occurs\
+}
