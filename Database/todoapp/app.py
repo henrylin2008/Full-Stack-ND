@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request, redirect, url_for
+from flask import Flask, render_template,request, redirect, url_for, jsonify 
 from flask_sqlalchemy import SQLAlchemy 
 
 app = Flask(__name__)
@@ -17,11 +17,15 @@ db.create_all() # sync table and model, ensure talbe is created from decleared m
 
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
-	description = request.form.get('description', '') # '': default empty string if nothing comes in
+	description = request.get_json()['description'] # get content from description field 
+	# description = request.form.get('description', '') # '': default empty string if nothing comes in
 	todo = Todo(description=description) # create a object 
 	db.session.add(todo) # add todo to pending stage
 	db.session.commit() # push it to the database 
-	return redirect(url_for('index')) # return to index page when it's done 
+	return jsonify({ # return json object
+		'description': todo.description
+		})
+	#redirect(url_for('index')) # return to index page when it's done 
 
 @app.route('/')
 def index():

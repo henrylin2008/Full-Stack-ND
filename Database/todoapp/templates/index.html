@@ -1,17 +1,65 @@
 <html>
 	<head>
 		<title>Todo App</title>
+		<style>
+			#error {
+				display: none;
+			}
+		</style>
 	</head>
 
 	<body>
-		<form method="post" action="/todos/create">
-			<input type="text" name="description" />
+		<div id="error" class="hidden">Something went wrong!</div> 
+		<!-- error message above the list, default not show 
+		-->
+		<form id='form' method="post" action="/todos/create">
+			<input type="text" id="description" name="description" />
 			<input type="submit" value="Create" />
 		</form>
-		<ul>
+
+		<ul id="todos">
 			{% for d in data %}
 			<li>{{ d.description}}</li>
 			{% endfor %}
 		</ul>
+		<script>
+			const descInput = document.getElementById('description'); 
+			document.getElementById('form').onsubmit = function(e){ 
+			//action when submit button is clicked
+				e.preventDefault(); // prevent refresh 
+				const desc = descInput.value; 
+				descInput.value = ''; 
+				fetch('/todos/create', { //sending request async
+					method: 'POST', 
+					body: JSON.stringify({
+						'description': desc, 
+						//document.getElementById('description').value
+						// get value from the description field 
+					}), 
+					headers: {
+						'Content-Type': 'application/json'
+						// json header 
+					}
+				})
+				.then(function(response){
+					// parse out the response (in string)
+					return response.json();
+				})
+				.then(function(jsonResponse){
+					//log from jsonResponse  
+					console.log(jsonResponse); //console log output from jsonResponse
+					const li = document.createElement('li'); //create an element
+					li.innerHTML = jsonResponse['description']; // content in description
+					document.getElementById('todos').appendChild(li); // append li item to the list 
+					document.getElementById('error').className = 'hidden'; 
+
+				})
+				.catch(function(){ //trigger only when something gone wrong in the server
+					document.getElementById('error').className = '';
+
+				})
+			}
+			
+		</script>
 	</body>
 </html>
