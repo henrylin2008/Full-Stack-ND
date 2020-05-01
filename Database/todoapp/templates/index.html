@@ -26,14 +26,13 @@
 			const descInput = document.getElementById('description'); 
 			document.getElementById('form').onsubmit = function(e){ 
 			//action when submit button is clicked
-				e.preventDefault(); // prevent refresh 
+				e.preventDefault(); // prevent default behavior: refresh the page 
 				const desc = descInput.value; 
 				descInput.value = ''; 
-				fetch('/todos/create', { //sending request async
+				fetch('/todos/create', { //sending request async; fetch (<url-route>,)
 					method: 'POST', 
 					body: JSON.stringify({
 						'description': desc, 
-						//document.getElementById('description').value
 						// get value from the description field 
 					}), 
 					headers: {
@@ -46,20 +45,17 @@
 					return response.json();
 				})
 				.then(function(jsonResponse){
-					//log from jsonResponse  
+					//log the response from jsonResponse  
 					console.log(jsonResponse); //console log output from jsonResponse
 					const li = document.createElement('li'); //create an element
 					li.innerHTML = jsonResponse['description']; // content in description
 					document.getElementById('todos').appendChild(li); // append li item to the list 
 					document.getElementById('error').className = 'hidden'; 
-
 				})
-				.catch(function(){ //trigger only when something gone wrong in the server
-					document.getElementById('error').className = '';
-
+				.catch(function(){ //trigger only wshen something gone wrong in the server
+					document.getElementById('error').className = ''; //remove the className 
 				})
 			}
-			
 		</script>
 	</body>
 </html>
