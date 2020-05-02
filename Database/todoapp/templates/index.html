@@ -2,8 +2,13 @@
 	<head>
 		<title>Todo App</title>
 		<style>
-			#error {
+			.hidden {
 				display: none;
+			}
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
 			}
 		</style>
 	</head>
@@ -19,10 +24,36 @@
 
 		<ul id="todos">
 			{% for d in data %}
-			<li>{{ d.description}}</li>
+			<li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %} /> {{ d.description}} </li>
 			{% endfor %}
 		</ul>
 		<script>
+			const checkboxes = document.querySelectorAll('.check-completed'); 
+			for (let i=0; i < checkboxes.length; i++){
+				const checkbox = checkboxes[i];
+				checkbox.onchange = function(e) {
+					console.log('event',e); //log event when status changed on checkbox
+					const newCompleted = e.target.checked;
+					const todoId = e.target.dataset['id']; // id of the todo item
+					fetch('/todos/' + todoId + '/set-completed',{ //send out a post request to this route when status of checkbox changed 
+						method: 'POST', 
+						body: JSON.stringify({
+							'completed': newCompleted
+						}), 
+						headers: {
+							'Content-Type': 'application/json' 
+						} 
+
+					})
+					.then(function() { // hide it if it's successful 
+						document.getElementById('error').className = 'hidden';
+					})
+					.catch(function(){ //trigger only when something gone wrong in the server
+						document.getElementById('error').className = ''; //remove the className 
+					})
+				}
+			}
+
 			const descInput = document.getElementById('description'); 
 			document.getElementById('form').onsubmit = function(e){ 
 			//action when submit button is clicked
@@ -52,7 +83,7 @@
 					document.getElementById('todos').appendChild(li); // append li item to the list 
 					document.getElementById('error').className = 'hidden'; 
 				})
-				.catch(function(){ //trigger only wshen something gone wrong in the server
+				.catch(function(){ //trigger only when something gone wrong in the server
 					document.getElementById('error').className = ''; //remove the className 
 				})
 			}
