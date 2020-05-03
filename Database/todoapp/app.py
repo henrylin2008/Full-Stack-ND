@@ -48,18 +48,30 @@ def create_todo():
 	#redirect(url_for('index')) # return to index page when it's done 
 
 
-@app.route('/todos/<todo_id>/set-completed', methods=['POST'])
+@app.route('/todos/<todo_id>/set-completed', methods=['POST']) # listen to post request comes in
 def set_completed_todo(todo_id):
 	try: 
 		completed = request.get_json()['completed']
-		todo = Todo.query.get(todo_id) # grab todo_id 
+		todo = Todo.query.get(todo_id) # grab todo item  
 		todo.completed = completed
 		db.session.commit() # push to db
 	except:
 		db.session.rollback() # if any errors, rollback the changes 
 	finally:
 		db.session.close() # close out the session regards what happened 
-	return redirect(url_for('index')) # grab refreshed list items in index page 
+	return redirect(url_for('index')) # return to index page and grab refreshed list items on index page 
+
+
+@app.route('/todos/<todo_id>', methods=['DELETE'])
+def delete_todo(todo_id):
+	try:
+		Todo.query.filter_by(id=todo_id).delete()
+		db.session.commit()
+	except: 
+		db.session.rollback()
+	finally:
+		db.session.close()
+	return jsonify({'success': True})
 
 @app.route('/')
 def index():

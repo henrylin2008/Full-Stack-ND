@@ -9,6 +9,19 @@
 				list-style: none;
 				padding: 0;
 				margin: 0;
+				width: 200px; /**/
+			}
+			li {
+				clear: both;
+			}
+			li button {  /* button style */
+				-webkit-appearance: none;
+				border: none;
+				outline: none;
+				color: red;
+				float: right;
+				cursor: pointer; /* can't pointing to */
+				font-size: 20px; 
 			}
 		</style>
 	</head>
@@ -24,18 +37,22 @@
 
 		<ul id="todos">
 			{% for d in data %}
-			<li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %} /> {{ d.description}} </li>
+			<li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %} /> {{ d.description}} 
+			 <button class="delete-button" data-id="{{ d.id }}" >&cross;</button> <!-- x button at the end of the item --> 
+			</li> 
+			<!-- if completed status is true, checked
+			--> 
 			{% endfor %}
 		</ul>
 		<script>
 			const checkboxes = document.querySelectorAll('.check-completed'); 
-			for (let i=0; i < checkboxes.length; i++){
+			for (let i=0; i < checkboxes.length; i++){ // loop over each checkbox 
 				const checkbox = checkboxes[i];
 				checkbox.onchange = function(e) {
 					console.log('event',e); //log event when status changed on checkbox
 					const newCompleted = e.target.checked;
 					const todoId = e.target.dataset['id']; // id of the todo item
-					fetch('/todos/' + todoId + '/set-completed',{ //send out a post request to this route when status of checkbox changed 
+					fetch('/todos/' + todoId + '/set-completed',{ //send out a POST request to this route when status of checkbox changed 
 						method: 'POST', 
 						body: JSON.stringify({
 							'completed': newCompleted
@@ -43,14 +60,26 @@
 						headers: {
 							'Content-Type': 'application/json' 
 						} 
-
 					})
-					.then(function() { // hide it if it's successful 
+					.then(function() { // hide error if it's successful 
 						document.getElementById('error').className = 'hidden';
 					})
 					.catch(function(){ //trigger only when something gone wrong in the server
 						document.getElementById('error').className = ''; //remove the className 
 					})
+				}
+			}
+
+			const deleteBtns = document.querySelectorAll('.delete-button');
+			for (let i=0; i < deleteBtns.length; i++){
+				const btn = deleteBtns[i];
+				btn.onclick = function(e) {
+					console.log('event', e);
+					//const newDelete = e.target.deleted; 
+					const todoId = e.target.dataset['id']; 
+					fetch('/todos/' + todoId, {
+						method: "DELETE", 
+					}); 
 				}
 			}
 
