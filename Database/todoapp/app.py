@@ -31,6 +31,21 @@ class TodoList(db.Model): # this is the parent model, and map Todo table as the 
 	todos = db.relationship('Todo', backref='list', lazy=True)  #linking child table, 
 		# lazy=True: no initial load, load data only as needed 
 
+order_items = db.Table('order_items',  # association table that links Order and Product tables, many-to-many relationship 
+	db.Column('order_id', db.Integer, db.ForeignKey('order.id'), primary_key=True), #linking order_id to order.id from order table
+	db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True) #linking product_id to product.id from product table 
+	)
+
+class Order(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	status = db.Column(db.String(), nullable=False)
+	products = db.relationship('Product', secondary=order_items, #link to order_items (association) table 
+		backref=db.backref('orders', lazy=True)) #link to parents (orders)
+
+class Product(db.Model):
+  id = db.Column(db.Integer, primary_key=True) 
+  name = db.Column(db.String(), nullable=False)
+
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
 	error = False
