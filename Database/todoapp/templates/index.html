@@ -9,7 +9,7 @@
 				list-style: none;
 				padding: 0;
 				margin: 0;
-				width: 200px; /**/
+				width: 300px; /**/
 			}
 			li {
 				clear: both;
@@ -23,27 +23,49 @@
 				cursor: pointer; /* can't pointing to */
 				font-size: 20px; 
 			}
+
+			.list-wrapper, .todos-wrapper {
+				display: inline-block;
+				vertical-align: top; 
+			}
 		</style>
 	</head>
 
 	<body>
-		<div id="error" class="hidden">Something went wrong!</div> 
-		<!-- error message above the list, default not show 
-		-->
-		<form id='form' method="post" action="/todos/create">
-			<input type="text" id="description" name="description" />
-			<input type="submit" value="Create" />
-		</form>
+		<div class="list-wrapper">
+			<ul id="lists">
+				{% for list in lists %}
+				<li>
+					<a href="/lists/{{ list.id }}">
+						{{ list.name }}
+					</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
 
-		<ul id="todos">
-			{% for d in data %}
-			<li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %} /> {{ d.description}} 
-			 <button class="delete-button" data-id="{{ d.id }}" >&cross;</button> <!-- x button at the end of the item --> 
-			</li> 
-			<!-- if completed status is true, checked
-			--> 
-			{% endfor %}
-		</ul>
+		<div class="todos-wrapper"> 
+			<h4> {{ active_list.name }}</h4>
+			<form id='form' method="post" action="/todos/create">
+				<input type="text" id="description" name="description" />
+				<input type="submit" value="Create" />
+			</form>
+			
+			<div id="error" class="hidden">Something went wrong!</div> 
+			<!-- error message above the list, default not show 
+			-->
+			<ul id="todos">
+				{% for todo in todos %}
+				<li><input class="check-completed" data-id="{{ todo.id }}" type="checkbox" {% if todo.completed %} checked {% endif %} /> 
+				{{ todo.description}} 
+				 <button class="delete-button" data-id="{{ todo.id }}" >&cross;</button> <!-- x button at the end of the item --> 
+				</li> 
+				<!-- if completed status is true, checked
+				--> 
+				{% endfor %}
+			</ul>
+		</div>
+
 		<script>
 			const checkboxes = document.querySelectorAll('.check-completed'); 
 			for (let i=0; i < checkboxes.length; i++){ // loop over each checkbox 
@@ -52,7 +74,7 @@
 					console.log('event',e); //log event when status changed on checkbox
 					const newCompleted = e.target.checked;
 					const todoId = e.target.dataset['id']; // id of the todo item
-					fetch('/todos/' + todoId + '/set-completed',{ //send out a POST request to this route when status of checkbox changed 
+					fetch('/todos/' + todoId + '/set-completed',{ //send out a POST request to this route when status of checkbox changed f
 						method: 'POST', 
 						body: JSON.stringify({
 							'completed': newCompleted

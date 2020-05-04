@@ -10,16 +10,26 @@ db = SQLAlchemy(app)  # linking SQLAlchemy with the app
 
 migrate = Migrate(app, db) # initized migration, update/downgrade database 
 
-class Todo(db.Model): 
+class Todo(db.Model):  # child model of TodoList class 
 	__tablename__ = 'todos'  # table name
 	id = db.Column(db.Integer, primary_key=True) # id attribute
 	description = db.Column(db.String(), nullable=False) # description attribute 
 	completed = db.Column(db.Boolean, nullable=False, default=False)
+	list_id = db.Column(db.Integer, db.ForeignKey('todolists.id'), nullable=False)
+	 	# db.Foreginkey('todolists.id'): ('parent_name.primary_key')
+	 	# nullable=False: Foreignkey must be have a value
 
 	def __repr__(self): # debugging statement
 		return f'<Todo {self.id} {self.description}>'
 
 # db.create_all() # sync table and model, ensure talbe is created from decleared model 
+
+class TodoList(db.Model): # this is the parent model, and map Todo table as the child 
+	__tablename__ = 'todolists'
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(), nullable=False)
+	todos = db.relationship('Todo', backref='list', lazy=True)  #linking child table, 
+		# lazy=True: no initial load, load data only as needed 
 
 @app.route('/todos/create', methods=['POST'])
 def create_todo():
@@ -73,10 +83,18 @@ def delete_todo(todo_id):
 		db.session.close()
 	return jsonify({'success': True})
 
+@app.route('/lists/<list_id>')
+def get_list_todos(list_id):
+	return render_template('index.html', 
+	lists=TodoList.query.all(), # all possible lists in todolists table
+	active_list=TodoList.query.get(list_id), 
+	todos = Todo.query.filter_by(list_id=list_id).order_by('id').all()
+	)	
+	# Todo.query.all(): select * from Todo (in DB) 
+
 @app.route('/')
 def index():
-	return render_template('index.html', data = Todo.query.order_by('id').all())	
-	# Todo.query.all(): select * from Todo (in DB) 
+	return redirect(url_for('get_list_todos', list_id=1)) # route home page to list_id=1 
 
 if __name__ == '__main__':
 	app.run(debug=True, port='5000')
