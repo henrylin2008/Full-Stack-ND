@@ -69,7 +69,7 @@ class Venue(db.Model):
 class Artist(db.Model):
     __tablename__ = 'Artist'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String)
     city = db.Column(db.String(120))
     state = db.Column(db.String(120))
     phone = db.Column(db.String(120))
@@ -95,12 +95,20 @@ class Artist(db.Model):
 
 class Show(db.Model):
     __tablename__ = 'Show'
-    show_id = db.Column(db.Integer, primary_key=True)
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
-    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
-    start_time = db.Column(db.DateTime)
-    venue = db.relationship('Venue', back_populates='artists')
-    artist = db.relationship('Artist', back_populates='venues')
+    # show_id = db.Column(db.Integer, primary_key=True)
+    # venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
+    # artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
+    # start_time = db.Column(db.DateTime)
+    # venue = db.relationship('Venue', back_populates='artists')
+    # artist = db.relationship('Artist', back_populates='venues')
+
+    id = db.Column(db.Integer, primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id', ondelete='CASCADE'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id', ondelete='CASCADE'), nullable=False)
+    start_time = db.Column(db.DateTime, nullable=False)
+    
+    def __repr__(self):
+        return '<Show {}{}>'.format(self.artist_id, self.venue_id)
   #venue_name
   #artist_name
   #artist_image_link 
@@ -428,8 +436,27 @@ def delete_artist(artist_id):
 
 @app.route('/shows')
 def shows():
-    shows= db.session.query(Artist, Venue, Show).join(Show, Show.artist_id ==Artist.id).join(Venue, Venue.id==Show.venue_id)
-    return render_template('pages/shows.html', shows=shows)
+    data = []
+    shows = db.session.query(Show.artist_id, Show.venue_id, Show.start_time).all()
+    for show in shows:
+      artist = db.session.query(Artist.name, Artist.image_link).filter(Artist.id == show[0]).one()
+      venue = db.session.query(Venue.name).filter(Venue.id == show[1]).one()
+      data.append({
+          "venue_id": show[1],
+          "venue_name": venue[0],
+          "artist_id": show[0],
+          "artist_name": artist[0],
+          "artist_image_link": artist[1],
+          "start_time": str(show[2])
+      })
+    return render_template('pages/shows.html', shows=data)
+
+
+    # shows= db.session.query(Artist, Venue, Show).join(Show, Show.artist_id ==Artist.id).join(Venue, Venue.id==Show.venue_id)
+    # return render_template('pages/shows.html', shows=shows)
+  
+
+
   # displays list of shows at /shows
   # TODO: replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
