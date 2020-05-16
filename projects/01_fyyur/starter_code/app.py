@@ -35,11 +35,10 @@ migrate = Migrate(app, db)
 
 class Venue(db.Model):
     __tablename__ = 'Venue'
-
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False) 
-    city = db.Column(db.String(120), nullable=False) 
-    state = db.Column(db.String(120), nullable=False) 
+    name = db.Column(db.String) 
+    city = db.Column(db.String(120)) 
+    state = db.Column(db.String(120)) 
     address = db.Column(db.String(120)) 
     phone = db.Column(db.String(120)) 
     image_link = db.Column(db.String(500)) 
@@ -48,28 +47,27 @@ class Venue(db.Model):
     genres = db.Column(ARRAY(db.String))
     seeking_talent = db.Column(db.Boolean, nullable=True, default=False)
     seeking_description = db.Column(db.String(500))
-    artists = db.relationship('Show', cascade="all, delete-orphan", backref=db.backref('venues_from_artist', lazy="joined"))
+    artists = db.relationship('Show', cascade="all,delete-orphan", backref=db.backref('venues', lazy="joined"))
     
     # past_shows_count
     # upcoming_shows_count 
     
     # past_shows
-    def past_shows(self, venue_id):
-      venueId=venue_id
+    def past_shows(self, id):
+      venueId=id
       past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Venue.id==venueId)
       return past_shows
 
     # upcoming_shows
-    def upcoming_shows(self, venue_id):
-      venueId=venue_id
-      upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue,Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(),Venue.id ==venueId)
+    def upcoming_shows(self, id):
+      venueId=id
+      upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(),Venue.id ==venueId)
       return upcoming_shows
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     city = db.Column(db.String(120))
@@ -81,17 +79,17 @@ class Artist(db.Model):
     website = db.Column(db.String(120))
     seeking_vanue = db.Column(db.Boolean,)
     seeking_description = db.Column(db.String(500))
-    venues = db.relationship('Show', cascade="all, delete-orphan", backref=db.backref('artists_from_venues', lazy="joined"))
+    venues = db.relationship('Show', cascade="all, delete-orphan", backref=db.backref('Artists', lazy="joined"))
     # past_shows
     def past_shows(self, id): 
-      artistId = id
-      past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Artist.id == artistId)
-      return past_shows
+        artistId = id
+        past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Artist.id == artistId)
+        return past_shows
     # upcoming_shows
     def upcoming_shows(self, id):
-      artistId = id
-      upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(), Artist.id == artistId)
-      return upcoming_shows
+        artistId = id
+        upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(), Artist.id == artistId)
+        return upcoming_shows
     # past_shows_count
     # upcoming_shows_count 
 
