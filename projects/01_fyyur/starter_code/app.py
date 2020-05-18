@@ -15,6 +15,8 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
+from datetime import datetime
+
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -24,99 +26,95 @@ app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
-
 migrate = Migrate(app, db)
 
 
-# TODO: connect to a local postgresql database
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
 
 class Venue(db.Model):
-    __tablename__ = 'Venue'
+    __tablename__ = 'venues'
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String) 
-    city = db.Column(db.String(120)) 
-    state = db.Column(db.String(120)) 
-    address = db.Column(db.String(120)) 
+    name = db.Column(db.String, nullable=False)
+    city = db.Column(db.String(120), nullable=False)
+    state = db.Column(db.String(120), nullable=False)
+    address = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120)) 
     image_link = db.Column(db.String(500)) 
     facebook_link = db.Column(db.String(120))
     website = db.Column(db.String(120))
-    genres = db.Column(ARRAY(db.String))
-    seeking_talent = db.Column(db.Boolean, nullable=True, default=False)
+    genres = db.Column(ARRAY(db.String), nullable=False)
+    seeking_talent = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500))
-    artists = db.relationship('Show', cascade="all,delete-orphan", backref=db.backref('venues', lazy="joined"))
-    
+    shows = db.relationship('Show', cascade="all,delete-orphan", backref=db.backref('venue', lazy="joined"))
+
+    def __repr__(self):
+      return self.name
+
     # past_shows_count
-    # upcoming_shows_count 
-    
+    # upcoming_shows_count
+
     # past_shows
-    def past_shows(self, id):
-      venueId=id
-      past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Venue.id==venueId)
-      return past_shows
-
-    # upcoming_shows
-    def upcoming_shows(self, id):
-      venueId=id
-      upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(),Venue.id ==venueId)
-      return upcoming_shows
-
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    # def past_shows(self, id):
+    #   venueId=id
+    #   past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Venue.id==venueId)
+    #   return past_shows
+    #
+    # # upcoming_shows
+    # def upcoming_shows(self, id):
+    #   venueId=id
+    #   upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(),Venue.id ==venueId)
+    #   return upcoming_shows
 
 class Artist(db.Model):
-    __tablename__ = 'Artist'
+    __tablename__ = 'artists'
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
+    name = db.Column(db.String, nullable=False)
+    city = db.Column(db.String(120), nullable=False)
+    state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120))
-    genres = db.Column(ARRAY(db.String())) # array
+    genres = db.Column(ARRAY(db.String)) # array
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
     website = db.Column(db.String(120))
     seeking_vanue = db.Column(db.Boolean,)
     seeking_description = db.Column(db.String(500))
-    venues = db.relationship('Show', cascade="all, delete-orphan", backref=db.backref('Artists', lazy="joined"))
+    shows = db.relationship('Show', cascade="all, delete-orphan", backref=db.backref('artist', lazy="joined"))
     # past_shows
-    def past_shows(self, id): 
-        artistId = id
-        past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Artist.id == artistId)
-        return past_shows
-    # upcoming_shows
-    def upcoming_shows(self, id):
-        artistId = id
-        upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(), Artist.id == artistId)
-        return upcoming_shows
+
+    def __repr__(self):
+      return self.name 
+
+    # def past_shows(self, id):
+    #     artistId = id
+    #     past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Artist.id == artistId)
+    #     return past_shows
+    # # upcoming_shows
+    # def upcoming_shows(self, id):
+    #     artistId = id
+    #     upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(), Artist.id == artistId)
+    #     return upcoming_shows
     # past_shows_count
     # upcoming_shows_count 
 
 class Show(db.Model):
     __tablename__ = 'Show'
-    # show_id = db.Column(db.Integer, primary_key=True)
-    # venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'))
-    # artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'))
-    # start_time = db.Column(db.DateTime)
-    # venue = db.relationship('Venue', back_populates='artists')
-    # artist = db.relationship('Artist', back_populates='venues')
-
     id = db.Column(db.Integer, primary_key=True)
-    artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id', ondelete='CASCADE'), nullable=False)
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id', ondelete='CASCADE'), nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artists.id', ondelete='CASCADE'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('venues.id', ondelete='CASCADE'), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
     
     def __repr__(self):
         return '<Show {}{}>'.format(self.artist_id, self.venue_id)
+    
+    # venue = db.relationship('Venue', back_populates='artists')
+    # artist = db.relationship('Artist', back_populates='venues')
   #venue_name
   #artist_name
-  #artist_image_link 
-
-# db.create_all()
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
-
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+  #artist_image_link
 
 #----------------------------------------------------------------------------#
 # Filters.
@@ -159,6 +157,8 @@ def search_venues():
   # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
   # seach for Hop should return "The Musical Hop".
   # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
+
+
 
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
@@ -239,10 +239,6 @@ def artists():
 
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.
-  # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
-  # search for "band" should return "The Wild Sax Band".
-
     searchTerm = request.form.get('search_term', '')
     results = Artist.query.filter(Artist.name.ilike('%'+searchTerm+'%'))
     return render_template('pages/search_artists.html', results=results, search_term=searchTerm)
@@ -497,7 +493,7 @@ def create_show_submission():
 @app.route('/shows/search', methods=['POST'])
 def search_shows():
     searchTerm=request.form.get('search_term', '')
-    results = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id ==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Artist.name.ilike('%'+term+'%'))
+    results = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id ==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Artist.name.ilike('%'+searchTerm+'%'))
     return render_template('pages/search_shows.html', results=results, search_term=searchTerm)
 
   # called to create new shows in the db, upon submitting new show listing form
