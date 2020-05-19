@@ -2,20 +2,20 @@
 # Imports
 # ----------------------------------------------------------------------------#
 
+import logging
 import json
-import dateutil.parser
-import babel
 import sys
-from flask import Flask, render_template, request, Response, flash, redirect, url_for, jsonify
+import babel
+import dateutil.parser
+from datetime import datetime
+from logging import Formatter, FileHandler
+from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, Response
+from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY
-import logging
-from logging import Formatter, FileHandler
-from flask_wtf import Form
 from forms import *
-from flask_migrate import Migrate
-from datetime import datetime
+from flask_wtf import Form
 
 # ----------------------------------------------------------------------------#
 # App Config.
@@ -68,22 +68,8 @@ class Artist(db.Model):
     seeking_description = db.Column(db.String(500))
     shows = db.relationship('Show', cascade="all, delete-orphan", backref='artist', lazy=True)
 
-    # past_shows
-
     def __repr__(self):
         return self.name
-
-        # def past_shows(self, id):
-    #     artistId = id
-    #     past_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time < datetime.today(), Artist.id == artistId)
-    #     return past_shows
-    # # upcoming_shows
-    # def upcoming_shows(self, id):
-    #     artistId = id
-    #     upcoming_shows = db.session.query(Artist, Venue, Show).join(Show, Show.artist_id==Artist.id).join(Venue, Venue.id==Show.venue_id).filter(Show.start_time > datetime.today(), Artist.id == artistId)
-    #     return upcoming_shows
-    # past_shows_count
-    # upcoming_shows_count 
 
 
 class Show(db.Model):
@@ -95,9 +81,6 @@ class Show(db.Model):
 
     def __repr__(self):
         return '<Show {}{}>'.format(self.artist_id, self.venue_id)
-
-    # venue = db.relationship('Venue', back_populates='artists')
-    # artist = db.relationship('Artist', back_populates='venues')
 
 
 # ----------------------------------------------------------------------------#
@@ -220,7 +203,6 @@ def create_venue_form():
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
     error = False
-    # form = request.form
     try:
         venue = Venue(
             name=request.form['name'],
@@ -245,25 +227,23 @@ def create_venue_submission():
         db.session.close()
 
     if error:  # on unsuccessful db insert, flash an error instead.
+        print(sys.exc_info())
         flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
     else:
         flash('Venue ' + request.form['name'] + ' was listed successfully')
 
-    return render_template('pages/home.html')
+    return render_template('pages/home.html',
+                           artists=Artist.query.order_by('id').limit(10),
+                           venues=Venue.query.order_by('id').limit(10)
+                           )
 
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
-    # TODO: Complete this endpoint for taking a venue_id, and using
-    # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
-
-    # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-    # clicking that button delete it from the db then redirect the user to the homepage
     error = False
     try:
         venue_name = Venue.query.get(venue_id).name
-        venue_id = Venue.query.filter_by(venue_id=id)
-        db.session.delet(venue_id)
+        Venue.query.filter_by(id=venue_id).delete()
         db.session.commit()
     except:
         error = True
@@ -286,7 +266,6 @@ def delete_venue(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 def artists():
-    # TODO: replace with real data returned from querying the database
     all_artists = Artist.query.order_by('name').all()
     return render_template('pages/artists.html', artists=all_artists)
 
@@ -294,13 +273,15 @@ def artists():
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
     search_term = request.form.get('search_term', '')
-    search_result = Artist.query.filter(Artist.name.ilike('%' + search_term + '%'))
+    search_result = Artist.query.filter(Artist.name.ilike('%' + search_term + '%')).all()
     count = len(search_result)
     response = {
         "count": count,
         "data": search_result
     }
-    return render_template('pages/search_artists.html', results=response, search_term=search_term)
+    return render_template('pages/search_artists.html',
+                           results=response,
+                           search_term=search_term)
 
 
 @app.route('/artists/<int:artist_id>')
@@ -439,24 +420,23 @@ def create_artist_form():
 def create_artist_submission():
     error = False
     try:
-        artist = Artist(
+        new_artist = Artist(
             name=request.form['name'],
             city=request.form['city'],
             state=request.form['state'],
             phone=request.form['phone'],
             genres=request.form.getlist('genres'),
             website=request.form['website'],
-            facebook_link=request.form['facebook_link'],
             image_link=request.form['image_link'],
+            facebook_link=request.form['facebook_link'],
             seeking_venue=int(request.form['seeking_venue']),
             seeking_description=request.form['seeking_description']
         )
-        db.session.add(artist)
+        db.session.add(new_artist)
         db.session.commit()
     except:
         error = True
         db.session.rollback()
-        print(sys.exc_info())
     finally:
         db.session.close()
 
@@ -465,7 +445,10 @@ def create_artist_submission():
     else:
         flash('Artist ' + request.form['name'] + ' was successfully listed!')
 
-    return render_template('pages/home.html')
+    return render_template('pages/home.html',
+                           artists=Artist.query.order_by('id').limit(10),
+                           venues=Venue.query.order_by('id').limit(10)
+                           )
 
 
 #  Shows
@@ -520,7 +503,11 @@ def create_show_submission():
     else:
         flash('Show was successfully listed!')
 
-    return render_template('pages/home.html')
+    return render_template('pages/home.html',
+                           artists=Artist.query.order_by('id').limit(10),
+                           venues=Venue.query.order_by('id').limit(10)
+                           )
+
 
 
 @app.errorhandler(404)
