@@ -1,7 +1,9 @@
 from datetime import datetime
 from flask_wtf import Form
-from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField
+from wtforms import (StringField, SelectField, SelectMultipleField,
+                     DateTimeField, RadioField)
 from wtforms.validators import DataRequired, AnyOf, URL
+
 
 class ShowForm(Form):
     artist_id = StringField(
@@ -13,8 +15,9 @@ class ShowForm(Form):
     start_time = DateTimeField(
         'start_time',
         validators=[DataRequired()],
-        default= datetime.today()
+        default=datetime.today()
     )
+
 
 class VenueForm(Form):
     name = StringField(
@@ -86,7 +89,7 @@ class VenueForm(Form):
         'phone'
     )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[URL(message='Must be a valid URL')]
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
@@ -113,9 +116,25 @@ class VenueForm(Form):
             ('Other', 'Other'),
         ]
     )
-    facebook_link = StringField(
-        'facebook_link', validators=[URL()]
+    website = StringField(
+        'website', validators=[URL(message='Must be a valid URL')]
     )
+    facebook_link = StringField(
+        'facebook_link', validators=[URL(message='Must be a valid URL')]
+    )
+    seeking_talent = RadioField(
+        'seeking_talent',
+        choices=[
+            ('0', 'no'),
+            ('1', 'yes')
+        ],
+        default='0'
+    )
+    seeking_description = StringField(
+        # TODO implement enum restriction
+        'seeking_description'
+    )
+
 
 class ArtistForm(Form):
     name = StringField(
@@ -185,7 +204,7 @@ class ArtistForm(Form):
         'phone'
     )
     image_link = StringField(
-        'image_link'
+        'image_link', validators=[URL(message='Must be a valid URL')]
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
@@ -214,7 +233,21 @@ class ArtistForm(Form):
     )
     facebook_link = StringField(
         # TODO implement enum restriction
-        'facebook_link', validators=[URL()]
+        'facebook_link', validators=[URL(message='Must be a valid URL')]
     )
-
-# TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM
+    website = StringField(
+        # TODO implement enum restriction
+        'website', validators=[URL(message='Must be a valid URL')]
+    )
+    seeking_venue = RadioField(
+        'seeking_venue',
+        choices=[
+            ('0', 'no'),
+            ('1', 'yes')
+        ],
+        default='0'
+    )
+    seeking_description = StringField(
+        # TODO implement enum restriction
+        'seeking_description',
+    )
