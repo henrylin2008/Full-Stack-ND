@@ -1,11 +1,11 @@
 {% extends 'layouts/main.html' %}
-{% block title %}{{ venue.name }} |Venue {% endblock %}
+{% block title %}Venue Search{% endblock %}
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
 		<h1 class="monospace">
 			{{ venue.name }}
-            <button class="btn btn-primary btn-sm" id="delete-button"
+			<button class="btn btn-primary btn-sm" id="delete-button"
 			 data-id="{{ venue.id }}">Delete</button>
 		</h1>
 		<p class="subtitle">
@@ -38,7 +38,7 @@
 				<i class="fas fa-quote-left"></i> {{ venue.seeking_description }} <i class="fas fa-quote-right"></i>
 			</div>
 		</div>
-		{% else %}	
+		{% else %}
 		<p class="not-seeking">
 			<i class="fas fa-moon"></i> Not currently seeking talent
 		</p>
