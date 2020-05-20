@@ -27,7 +27,7 @@
 	<h4>
 		Recent Listed Artists
 		<ul id='artists'>
-			{% for artist in artists %}
+			{% for artist in artists|reverse %}
 				<li><a href="/artists/{{ artist.id }}">{{ artist.name }}</a></li>
 			{% endfor %}
 		</ul>
@@ -35,7 +35,7 @@
 	<h4>
 		Recent Listed Venues
 		<ul id='venues'>
-			{% for venue in venues %}
+			{% for venue in venues|reverse %}
 				<li><a href="/venues/{{ venue.id }}">{{ venue.name }}</a></li>
 			{% endfor %}
 		</ul>
