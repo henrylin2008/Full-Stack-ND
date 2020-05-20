@@ -202,40 +202,28 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-    error = False
+    form = VenueForm(request.form)
     try:
         venue = Venue(
-            name=request.form['name'],
-            city=request.form['city'],
-            state=request.form['state'],
-            address=request.form['address'],
-            phone=request.form['phone'],
-            genres=request.form.getlist('genres'),
-            website=request.form['website'],
-            facebook_link=request.form['facebook_link'],
-            image_link=request.form['image_link'],
-            seeking_talent=int(request.form['seeking_talent']),
-            seeking_description=request.form['seeking_description'],
+            name=form.name.data,
+            city=form.city.data,
+            state=form.state.data,
+            address=form.address.data,
+            phone=form.phone.data,
+            genres=form.genres.data,
+            website=form.website.data,
+            facebook_link=form.facebook_link.data,
+            image_link=form.image_link.data,
+            seeking_talent=int(form.seeking_talent.data),
+            seeking_description=form.seeking_description.data
         )
         db.session.add(venue)
         db.session.commit()
-    except:
-        error = True
-        db.session.rollback()
-        print(sys.exc_info())
-    finally:
-        db.session.close()
+        flash('Venue ' + request.form['name'] + ' was successfully listed!')
+    except ValueError:
+        flash('An error occurred. Venue ' + form.name + ' could not be listed.')
 
-    if error:  # on unsuccessful db insert, flash an error instead.
-        print(sys.exc_info())
-        flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
-    else:
-        flash('Venue ' + request.form['name'] + ' was listed successfully')
-
-    return render_template('pages/home.html',
-                           artists=Artist.query.order_by('id').limit(10),
-                           venues=Venue.query.order_by('id').limit(10)
-                           )
+    return render_template('pages/home.html')
 
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
@@ -418,38 +406,27 @@ def create_artist_form():
 
 @app.route('/artists/create', methods=['POST'])
 def create_artist_submission():
-    error = False
+    form = ArtistForm(request.form)
     try:
         new_artist = Artist(
-            name=request.form['name'],
-            city=request.form['city'],
-            state=request.form['state'],
-            phone=request.form['phone'],
-            genres=request.form.getlist('genres'),
-            website=request.form['website'],
-            image_link=request.form['image_link'],
-            facebook_link=request.form['facebook_link'],
-            seeking_venue=int(request.form['seeking_venue']),
-            seeking_description=request.form['seeking_description']
+            name=form.name.data,
+            city=form.city.data,
+            state=form.state.data,
+            phone=form.phone.data,
+            genres=form.genres.data,
+            facebook_link=form.facebook_link.data,
+            image_link=form.image_link.data,
+            website=form.website.data,
+            seeking_venue=int(form.seeking_venue.data),
+            seeking_description=form.seeking_description.data
         )
         db.session.add(new_artist)
         db.session.commit()
-    except:
-        error = True
-        db.session.rollback()
-    finally:
-        db.session.close()
-
-    if error:  # on unsuccessful db insert, flash an error instead.
-        flash('An error occurred. Artist ' + request.form['name'] + ' could not be listed.')
-    else:
         flash('Artist ' + request.form['name'] + ' was successfully listed!')
+    except ValueError:
+        flash('An error occurred. Artist ' + form.name + ' could not be listed.')
 
-    return render_template('pages/home.html',
-                           artists=Artist.query.order_by('id').limit(10),
-                           venues=Venue.query.order_by('id').limit(10)
-                           )
-
+    return render_template('pages/home.html')
 
 #  Shows
 #  ----------------------------------------------------------------
