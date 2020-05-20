@@ -16,6 +16,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY
 from forms import *
 from flask_wtf import Form
+from sqlalchemy import and_, or_, not_
 
 # ----------------------------------------------------------------------------#
 # App Config.
@@ -133,9 +134,12 @@ def venues():
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
     search_term = request.form.get('search_term', '')
-    search_result = Venue.query.filter(Venue.name.ilike('%' + search_term + '%')).all()
-        # .filter(Venue.state.ilike('%' + search_term + '%'))\
-        # .filter(Venue.city.ilike('%' + search_term + '%')).all()
+    search_result = Venue.query.filter(
+                    or_ (Venue.name.ilike('%' + search_term + '%'),
+                         Venue.city.ilike('%' + search_term + '%'),
+                         Venue.state.ilike('%' + search_term + '%')
+                        )
+                    ).all()
     count = len(search_result)
     response = {
         "count": count,
@@ -263,7 +267,12 @@ def artists():
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
     search_term = request.form.get('search_term', '')
-    search_result = Artist.query.filter(Artist.name.ilike('%' + search_term + '%')).all()
+    search_result = Artist.query.filter(
+                        or_ (Artist.name.ilike('%' + search_term + '%'),
+                             Artist.city.ilike('%' + search_term + '%'),
+                             Artist.state.ilike('%' + search_term + '%')
+                             )
+                        ).all()
     count = len(search_result)
     response = {
         "count": count,
