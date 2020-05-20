@@ -134,6 +134,8 @@ def venues():
 def search_venues():
     search_term = request.form.get('search_term', '')
     search_result = Venue.query.filter(Venue.name.ilike('%' + search_term + '%')).all()
+        # .filter(Venue.state.ilike('%' + search_term + '%'))\
+        # .filter(Venue.city.ilike('%' + search_term + '%')).all()
     count = len(search_result)
     response = {
         "count": count,
@@ -364,8 +366,6 @@ def edit_venue(venue_id):
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-    # TODO: take values from the form submitted, and update existing
-    # venue record with ID <venue_id> using the new attributes
     error = False
     try:
         venue = Venue.query.get(venue_id)
@@ -428,6 +428,30 @@ def create_artist_submission():
 
     return render_template('pages/home.html')
 
+
+@app.route('/artists/<artist_id>', methods=['DELETE'])
+def delete_artist(artist_id):
+    error = False
+    try:
+        artist_name = Artist.query.get(artist_id).name
+        Artist.query.filter_by(id=artist_id).delete()
+        db.session.commit()
+    except:
+        error = True
+        db.session.rollback()
+        print(sys.exc_info())
+    finally:
+        db.session.close()
+
+    if error:  # on unsuccessful db insert, flash an error instead.
+        flash('An error occurred. Venue ' + artist_name + ' could not be listed.')
+        return jsonify({'success': False})
+    else:
+        flash('Venue ' + artist_name + ' was deleted successfully!')
+        return jsonify({'success': True})
+
+    return render_template('pages/home.html')
+
 #  Shows
 #  ----------------------------------------------------------------
 
@@ -480,11 +504,7 @@ def create_show_submission():
     else:
         flash('Show was successfully listed!')
 
-    return render_template('pages/home.html',
-                           artists=Artist.query.order_by('id').limit(10),
-                           venues=Venue.query.order_by('id').limit(10)
-                           )
-
+    return render_template('pages/home.html')
 
 
 @app.errorhandler(404)
