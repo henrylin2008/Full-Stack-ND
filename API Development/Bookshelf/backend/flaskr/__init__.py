@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy  # , or_
 from flask_cors import CORS
@@ -90,30 +91,48 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    @app.route('/books', methods=['POST'])
-    def create_book():
-        body = request.get_json()
+        @app.route('/books', methods=['POST'])
+        def create_book():
+            body = request.get_json()
 
-        new_title = body.get('title', None)
-        new_author = body.get('author', None)
-        new_rating = body.get('rating', None)
+            new_title = body.get('title', None)
+            new_author = body.get('author', None)
+            new_rating = body.get('rating', None)
+            search = body.get('search', None)
 
-        try:
-            book = Book(title=new_title, author=new_author, rating=new_rating)
-            book.insert()
+            try:
+                if search:
+                    selection = Book.query.order_by(Book.id).filter(Book.title.ilike('%{}%'.format(search)))
+                    current_books = paginate_books(request, selection)
 
-            selection = Book.query.order_by(Book.id).all()
-            current_books = paginate_books(request, selection)
+                    return jsonify({
+                        'success': True,
+                        'books': current_books,
+                        'total_books': len(selection.all())
+                    })
 
-            return jsonify({
-                'success': True,
-                'created': book.id,
-                'books': current_books,
-                'total_books': len(Book.query.all())
-            })
+                else:
+                    book = Book(title=new_title, author=new_author, rating=new_rating)
+                    book.insert()
 
-        except:
-            abort(422)
+                    selection = Book.query.order_by(Book.id).all()
+                    current_books = paginate_books(request, selection)
+
+                    return jsonify({
+                        'success': True,
+                        'created': book.id,
+                        'books': current_books,
+                        'total_books': len(Book.query.all())
+                    })
+
+            except:
+                abort(422)
+
+    # @TODO: Create a new endpoint or update a previous endpoint to handle searching for a team in the title
+    #        the body argument is called 'search' coming from the frontend.
+    #        If you use a different argument, make sure to update it in the frontend code.
+    #        The endpoint will need to return success value, a list of books for the search and the number of books with the search term
+    #        Response body keys: 'success', 'books' and 'total_books'
 
     @app.errorhandler(404)
     def not_found(error):
@@ -123,7 +142,7 @@ def create_app(test_config=None):
             "message": "resource not found"
         }), 404
 
-    @app.errorhandler(400)
+    @app.errorhandler(422)
     def unprocessable(error):
         return jsonify({
             "success": False,
@@ -138,23 +157,6 @@ def create_app(test_config=None):
             "error": 400,
             "message": "bad request"
         }), 400
-
-    @app.errorhandler(405)
-    def not_found(error):
-        return jsonify({
-            "success": False,
-            "error": 405,
-            "message": "method not allowed"
-        }), 405
-
-    # @TODO: Review the above code for route handlers.
-    #        Pay special attention to the status codes used in the aborts since those are relevant for this task!
-
-    # @TODO: Write error handler decorators to handle AT LEAST status codes 400, 404, and 422.
-
-    # TEST: Practice writing curl requests. Write some requests that you know will error in expected ways.
-    #       Make sure they are returning as expected. Do the same for other misformatted requests or requests missing data.
-    #       If you find any error responses returning as HTML, write new error handlers for them.
 
     return app
 
