@@ -38,7 +38,7 @@ def create_app(test_config=None):
         selection = Book.query.order_by(Book.id).all()
         current_books = paginate_books(request, selection)
 
-        if len(current_books) == 0:
+        if len(current_books) == 0: # if the len is out of range and there're still books, return page can't be found 
             abort(404)
 
         return jsonify({
@@ -57,7 +57,7 @@ def create_app(test_config=None):
             if book is None: # if no book matches the id, abort(404)
                 abort(404)
 
-            if 'rating' in body: # update rating 
+            if 'rating' in body: # if rating in the body, then update the rating 
                 book.rating = int(body.get('rating'))
 
             book.update() # update 
@@ -79,8 +79,8 @@ def create_app(test_config=None):
                 abort(404)
 
             book.delete() # delete the book 
-            selection = Book.query.order_by(Book.id).all() 
-            current_books = paginate_books(request, selection) #paginate the page based off current location
+            selection = Book.query.order_by(Book.id).all() # selectin of page of books 
+            current_books = paginate_books(request, selection) # paginate the page based off the current location
 
             return jsonify({
                 'success': True,
@@ -102,9 +102,9 @@ def create_app(test_config=None):
         search = body.get('search', None)
 
         try:
-            if search:
-                selection = Book.query.order_by(Book.id).filter(Book.title.ilike('%{}%'.format(search)))
-                current_books = paginate_books(request, selection)
+            if search: # if there's search term
+                selection = Book.query.order_by(Book.id).filter(Book.title.ilike('%{}%'.format(search))) # search book title with case insensitive 
+                current_books = paginate_books(request, selection) # paginate the search results
 
                 return jsonify({
                     'success': True,
@@ -126,8 +126,8 @@ def create_app(test_config=None):
                     'total_books': len(Book.query.all())
                     })
 
-            except: #unprocessable
-                abort(422)
+        except: #unprocessable
+            abort(422)
 
     # @TODO: Create a new endpoint or update a previous endpoint to handle searching for a team in the title
     #        the body argument is called 'search' coming from the frontend.
@@ -158,6 +158,14 @@ def create_app(test_config=None):
             "error": 400,
             "message": "bad request"
         }), 400
+
+    @app.errorhandler(405)
+    def not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "method not allowed"
+        }), 405
 
     return app
 
