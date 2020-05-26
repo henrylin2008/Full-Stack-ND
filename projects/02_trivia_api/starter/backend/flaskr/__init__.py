@@ -208,6 +208,7 @@ def create_app(test_config=None):
   categories in the left column will cause only questions of that 
   category to be shown. 
   '''
+
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def retrieve_questions_by_category(category_id):
         try:
@@ -228,6 +229,7 @@ def create_app(test_config=None):
 
         except:
             abort(422)
+
     '''
   @TODO: 
   Create a POST endpoint to get questions to play the quiz. 
@@ -239,6 +241,35 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   '''
+
+    @app.route('/quizzes', methods=['POST'])
+    def retrieve_questions_for_quiz():
+        body = request.get_json()
+        previous_question = body.get('previous_questions', None)
+        quiz_category = body.get('quiz_category', None)
+
+        try:
+            if quiz_category['id'] == 0:
+                questions = Question.query.filter(Question.id.notin_(previous_question)).all()
+            else:
+                questions = Question.query.filter(Question.category == quiz_category['id'],
+                                                  Question.id.notin_(previous_question)).all()
+
+            questions = [question.format() for question in questions]
+
+            if len(questions) == 0:
+                abort(404)
+
+            question = random.choice(questions)
+
+            return jsonify({
+                'success': True,
+                'question': questions,
+                'current_category': quiz_category['type']
+            })
+
+        except:
+            abort(422)
 
     '''
   @TODO: 
