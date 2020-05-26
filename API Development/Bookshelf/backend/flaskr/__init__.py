@@ -50,36 +50,37 @@ def create_app(test_config=None):
     @app.route('/books/<int:book_id>', methods=['PATCH'])
     def update_book(book_id):
 
-        body = request.get_json()
+        body = request.get_json() # get the body from the request 
 
         try:
             book = Book.query.filter(Book.id == book_id).one_or_none()
-            if book is None:
+            if book is None: # if no book matches the id, abort(404)
                 abort(404)
 
-            if 'rating' in body:
+            if 'rating' in body: # update rating 
                 book.rating = int(body.get('rating'))
 
-            book.update()
+            book.update() # update 
 
             return jsonify({
                 'success': True,
+                'id': book.id 
             })
 
-        except:
+        except: # any failure finding that book or failed to update it, send a (400) error 
             abort(400)
 
     @app.route('/books/<int:book_id>', methods=['DELETE'])
     def delete_book(book_id):
         try:
-            book = Book.query.filter(Book.id == book_id).one_or_none()
+            book = Book.query.filter(Book.id == book_id).one_or_none() # check if the book exists 
 
-            if book is None:
+            if book is None: # return 404 if not exist 
                 abort(404)
 
-            book.delete()
-            selection = Book.query.order_by(Book.id).all()
-            current_books = paginate_books(request, selection)
+            book.delete() # delete the book 
+            selection = Book.query.order_by(Book.id).all() 
+            current_books = paginate_books(request, selection) #paginate the page based off current location
 
             return jsonify({
                 'success': True,
@@ -95,9 +96,9 @@ def create_app(test_config=None):
     def create_book():
         body = request.get_json()
 
-        new_title = body.get('title', None)
-        new_author = body.get('author', None)
-        new_rating = body.get('rating', None)
+        new_title = body.get('title', None) # get title from the body, if nothing in title, set its value to None
+        new_author = body.get('author', None) # get author from the body, if nothing in author, set its value to None
+        new_rating = body.get('rating', None) # get rating from the body, if no rating, then set its value to None (initially)
         search = body.get('search', None)
 
         try:
@@ -125,7 +126,7 @@ def create_app(test_config=None):
                     'total_books': len(Book.query.all())
                     })
 
-            except:
+            except: #unprocessable
                 abort(422)
 
     # @TODO: Create a new endpoint or update a previous endpoint to handle searching for a team in the title
