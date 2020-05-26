@@ -10,12 +10,12 @@ BOOKS_PER_SHELF = 8
 
 
 def paginate_books(request, selection):
-    page = request.args.get('page', 1, type=int)
-    start = (page - 1) * BOOKS_PER_SHELF
-    end = start + BOOKS_PER_SHELF
+    page = request.args.get('page', 1, type=int) # looked at request object and args value, get the value of key 'page'; if key doesn't exist, set default to 1 and type is integer.  
+    start = (page - 1) * BOOKS_PER_SHELF # starting index (of the page)
+    end = start + BOOKS_PER_SHELF # ending index (of the page)
 
-    books = [book.format() for book in selection]
-    current_books = books[start:end]
+    books = [book.format() for book in selection] # get all the books and display book details in the format that defined in models.py (including id, title, author, rating)
+    current_books = books[start:end] # current page 
 
     return current_books
 
@@ -43,8 +43,8 @@ def create_app(test_config=None):
 
         return jsonify({
             'success': True,
-            'books': current_books,
-            'total_books': len(Book.query.all())
+            'books': current_books, # current page
+            'total_books': len(Book.query.all()) # total pages
         })
 
     @app.route('/books/<int:book_id>', methods=['PATCH'])
@@ -91,38 +91,38 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-        @app.route('/books', methods=['POST'])
-        def create_book():
-            body = request.get_json()
+    @app.route('/books', methods=['POST'])
+    def create_book():
+        body = request.get_json()
 
-            new_title = body.get('title', None)
-            new_author = body.get('author', None)
-            new_rating = body.get('rating', None)
-            search = body.get('search', None)
+        new_title = body.get('title', None)
+        new_author = body.get('author', None)
+        new_rating = body.get('rating', None)
+        search = body.get('search', None)
 
-            try:
-                if search:
-                    selection = Book.query.order_by(Book.id).filter(Book.title.ilike('%{}%'.format(search)))
-                    current_books = paginate_books(request, selection)
+        try:
+            if search:
+                selection = Book.query.order_by(Book.id).filter(Book.title.ilike('%{}%'.format(search)))
+                current_books = paginate_books(request, selection)
 
-                    return jsonify({
-                        'success': True,
-                        'books': current_books,
-                        'total_books': len(selection.all())
+                return jsonify({
+                    'success': True,
+                    'books': current_books,
+                    'total_books': len(selection.all())
                     })
 
-                else:
-                    book = Book(title=new_title, author=new_author, rating=new_rating)
-                    book.insert()
+            else:
+                book = Book(title=new_title, author=new_author, rating=new_rating)
+                book.insert()
 
-                    selection = Book.query.order_by(Book.id).all()
-                    current_books = paginate_books(request, selection)
+                selection = Book.query.order_by(Book.id).all()
+                current_books = paginate_books(request, selection)
 
-                    return jsonify({
-                        'success': True,
-                        'created': book.id,
-                        'books': current_books,
-                        'total_books': len(Book.query.all())
+                return jsonify({
+                    'success': True,
+                    'created': book.id,
+                    'books': current_books,
+                    'total_books': len(Book.query.all())
                     })
 
             except:
