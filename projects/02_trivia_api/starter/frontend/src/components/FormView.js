@@ -19,11 +19,11 @@ class FormView extends Component {
     $.ajax({
       url: `/categories`, //TODO: update request URL
       type: "GET",
-      success: (result) => {
+      success: result => {
         this.setState({ categories: result.categories })
         return;
       },
-      error: (error) => {
+      error: error => {
         alert('Unable to load categories. Please try your request again')
         return;
       }
