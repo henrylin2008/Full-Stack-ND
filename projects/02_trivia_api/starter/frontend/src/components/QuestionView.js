@@ -62,14 +62,14 @@ class QuestionView extends Component {
     $.ajax({
       url: `/categories/${id}/questions`, //TODO: update request URL
       type: "GET",
-      success: (result) => {
+      success: result => {
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
           currentCategory: result.current_category })
         return;
       },
-      error: (error) => {
+      error: error => {
         alert('Unable to load questions. Please try your request again')
         return;
       }
