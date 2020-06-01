@@ -49,15 +49,15 @@ def create_app(test_config=None):
     def retrieve_categories():
         try:
             categories = Category.query.order_by(Category.id).all()
-            category_types = [category.format() for category in categories]
+            categories = [category.type for category in categories]
 
-            if len(category_types) == 0:
+            if len(categories) == 0:
                 abort(404)
 
             return jsonify({
                 'success': True,
-                'category': category_types,
-                'total_categories': len(categories)
+                'category': categories,
+                # 'total_categories': len(categories)
             })
         except:
             abort(422)
