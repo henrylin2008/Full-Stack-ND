@@ -181,7 +181,7 @@ def create_app(test_config=None):
     @app.route('/search_questions', methods=['POST'])
     def retrieve_question():
         body = request.get_json()
-        search_term = body.get('search', None)
+        search_term = body.get('searchTerm', None)
 
         try:
             search_questions = Question.query.order_by(Question.id).filter(Question.question.ilike
@@ -192,6 +192,8 @@ def create_app(test_config=None):
                 abort(404)
 
             categories = set()
+            for question in current_questions:
+                categories.add(Category.query.get(question['category']).type)
 
             return jsonify({
                 'success': True,
@@ -215,7 +217,6 @@ def create_app(test_config=None):
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def retrieve_questions_by_category(category_id):
         try:
-            category_id = str(category_id + 1)
             questions_by_category = Question.query.filter(Question.category == str(category_id)).order_by(Question.id).all()
             current_questions = paginate_questions(request, questions_by_category)
 
