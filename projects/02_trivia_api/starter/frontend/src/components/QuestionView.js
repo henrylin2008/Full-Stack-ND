@@ -25,7 +25,7 @@ class QuestionView extends Component {
     $.ajax({
       url: `/questions?page=${this.state.page}`, //TODO: update request URL
       type: "GET",
-      success: (result) => {
+      success: result => {
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
@@ -33,7 +33,7 @@ class QuestionView extends Component {
           currentCategory: result.current_category })
         return;
       },
-      error: (error) => {
+      error: error => {
         alert('Unable to load questions. Please try your request again')
         return;
       }
@@ -76,9 +76,9 @@ class QuestionView extends Component {
     })
   }
 
-  submitSearch = (searchTerm) => {
+  submitSearch = searchTerm => {
     $.ajax({
-      url: `/questions`, //TODO: update request URL
+      url: `/search_questions`, //TODO: update request URL
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
@@ -87,14 +87,14 @@ class QuestionView extends Component {
         withCredentials: true
       },
       crossDomain: true,
-      success: (result) => {
+      success: result => {
         this.setState({
           questions: result.questions,
           totalQuestions: result.total_questions,
           currentCategory: result.current_category })
         return;
       },
-      error: (error) => {
+      error: error => {
         alert('Unable to load questions. Please try your request again')
         return;
       }
@@ -107,10 +107,10 @@ class QuestionView extends Component {
         $.ajax({
           url: `/questions/${id}`, //TODO: update request URL
           type: "DELETE",
-          success: (result) => {
+          success: result => {
             this.getQuestions();
           },
-          error: (error) => {
+          error: error => {
             alert('Unable to load questions. Please try your request again')
             return;
           }
@@ -125,12 +125,13 @@ class QuestionView extends Component {
         <div className="categories-list">
           <h2 onClick={() => {this.getQuestions()}}>Categories</h2>
           <ul>
-            {Object.keys(this.state.categories).map((id, ) => (
-              <li key={id} onClick={() => {this.getByCategory(id)}}>
+            {Object.keys(this.state.categories).map(id => (
+              <li key={id} onClick={() => {this.getByCategory(parseInt(id) + 1);}}>
                 {this.state.categories[id]}
-                <img className="category" src={`${this.state.categories[id]}.svg`}/>
+                <img className="category" src={`${this.state.categories[id]}.svg`} />
               </li>
-            ))}
+              ))
+            }
           </ul>
           <Search submitSearch={this.submitSearch}/>
         </div>
@@ -138,12 +139,12 @@ class QuestionView extends Component {
           <h2>Questions</h2>
           {this.state.questions.map((q, ind) => (
             <Question
-              key={q.id}
-              question={q.question}
-              answer={q.answer}
-              category={this.state.categories[q.category]} 
-              difficulty={q.difficulty}
-              questionAction={this.questionAction(q.id)}
+                key={q.id}
+                question={q.question}
+                answer={q.answer}
+                category={this.state.categories[q.category - 1]}
+                difficulty={q.difficulty}
+                questionAction={this.questionAction(q.id)}
             />
           ))}
           <div className="pagination-menu">
