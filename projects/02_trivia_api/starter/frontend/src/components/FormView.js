@@ -20,7 +20,7 @@ class FormView extends Component {
       url: `/categories`, //TODO: update request URL
       type: "GET",
       success: result => {
-        this.setState({ categories: result.categories });
+        this.setState({ category: result.categories });
         return;
       },
       error: error => {
@@ -48,18 +48,18 @@ class FormView extends Component {
         withCredentials: true
       },
       crossDomain: true,
-      success: (result) => {
+      success: result => {
         document.getElementById("add-question-form").reset();
         return;
       },
-      error: (error) => {
+      error: error => {
         alert('Unable to add question. Please try your request again')
         return;
       }
     })
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({[event.target.name]: event.target.value})
   }
 
@@ -92,7 +92,7 @@ class FormView extends Component {
               {Object.keys(this.state.categories).map(id => {
                   return (
                     <option key={id} value={parseInt(id) + 1}>{this.state.categories[id]}</option>
-                  )
+                  );
                 })}
             </select>
           </label>
