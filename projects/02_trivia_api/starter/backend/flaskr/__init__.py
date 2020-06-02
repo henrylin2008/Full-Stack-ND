@@ -124,7 +124,7 @@ def create_app(test_config=None):
                 'success': True,
                 'deleted': question_id,
                 'questions': current_questions,
-                'total_questions': len(Question.query.all())
+                'total_questions': len(all_questions)
             })
 
         except:
