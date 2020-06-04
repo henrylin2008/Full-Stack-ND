@@ -17,10 +17,10 @@ class FormView extends Component {
 
   componentDidMount(){
     $.ajax({
-      url: `/categories`, //TODO: update request URL
+      url: `/categories`,
       type: "GET",
       success: result => {
-        this.setState({ category: result.categories });
+        this.setState({ categories: result.categories });
         return;
       },
       error: error => {
@@ -31,10 +31,10 @@ class FormView extends Component {
   }
 
 
-  submitQuestion = (event) => {
+  submitQuestion = event => {
     event.preventDefault();
     $.ajax({
-      url: '/questions', //TODO: update request URL
+      url: '/questions',
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
@@ -85,6 +85,7 @@ class FormView extends Component {
               <option value="4">4</option>
               <option value="5">5</option>
             </select>
+
           </label>
           <label>
             Category
@@ -92,7 +93,7 @@ class FormView extends Component {
               {Object.keys(this.state.categories).map(id => {
                   return (
                     <option key={id} value={parseInt(id) + 1}>{this.state.categories[id]}</option>
-                  );
+                  )
                 })}
             </select>
           </label>
