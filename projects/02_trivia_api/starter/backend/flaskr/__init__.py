@@ -58,9 +58,9 @@ def create_app(test_config=None):
 
             return jsonify({
                 'success': True,
-                'category': categories,
-                # 'total_categories': len(categories)
+                'categories': categories,
             })
+
         except:
             abort(422)
 
