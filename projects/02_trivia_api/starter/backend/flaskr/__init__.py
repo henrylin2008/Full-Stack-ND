@@ -22,6 +22,10 @@ def paginate_questions(request, all_questions):
 
 def create_app(test_config=None):
     # create and configure the app
+    ######################################################################
+    # Initial setups
+    ######################################################################
+
     app = Flask(__name__)
     setup_db(app)
     '''
@@ -39,11 +43,9 @@ def create_app(test_config=None):
         response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
         return response
 
-    '''
-  @TODO: 
-  Create an endpoint to handle GET requests 
-  for all available categories.
-  '''
+    ######################################################################
+    # Endpoint functions
+    ######################################################################
 
     @app.route('/categories', methods=['GET'])
     def retrieve_categories():
@@ -61,6 +63,7 @@ def create_app(test_config=None):
             })
         except:
             abort(422)
+
     '''
   @TODO: 
   Create an endpoint to handle GET requests for questions, 
@@ -115,7 +118,6 @@ def create_app(test_config=None):
 
             question.delete()
             all_questions = Question.query.order_by(Question.id).all()
-            current_questions = paginate_questions(request, all_questions)
 
             if len(all_questions) == 0:
                 abort(404)
@@ -123,7 +125,6 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True,
                 'deleted': question_id,
-                'questions': current_questions,
                 'total_questions': len(all_questions)
             })
 
@@ -179,14 +180,13 @@ def create_app(test_config=None):
   '''
 
     @app.route('/search_questions', methods=['POST'])
-    def retrieve_question():
-        body = request.get_json()
-        search_term = body.get('searchTerm', None)
-
+    def search_questions():
         try:
-            search_questions = Question.query.order_by(Question.id).filter(Question.question.ilike
-                                                                           ('%{}%'.format(search_term))).all()
-            current_questions = paginate_questions(request, search_questions)
+            body = request.get_json()
+            search_term = body.get('searchTerm', None)
+            searched_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term)))\
+                                                        .order_by(Question.id).all()
+            current_questions = paginate_questions(request, searched_questions)
 
             if len(current_questions) == 0:
                 abort(404)
@@ -217,7 +217,8 @@ def create_app(test_config=None):
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def retrieve_questions_by_category(category_id):
         try:
-            questions_by_category = Question.query.filter(Question.category == str(category_id)).order_by(Question.id).all()
+            questions_by_category = Question.query.filter(Question.category == str(category_id)).order_by(
+                Question.id).all()
             current_questions = paginate_questions(request, questions_by_category)
 
             if len(current_questions) == 0:
@@ -249,27 +250,26 @@ def create_app(test_config=None):
 
     @app.route('/quizzes', methods=['POST'])
     def retrieve_questions_for_quiz():
-        body = request.get_json()
-        previous_question = body.get('previous_questions', None)
-        quiz_category = body.get('quiz_category', None)
-
         try:
+            body = request.get_json()
+            previous_question = body.get('previous_questions', None)
+            quiz_category = body.get('quiz_category', None)
             if quiz_category['id'] == 0:
-                questions = Question.query.filter(Question.id.notin_(previous_question)).all()
+                questions_for_quiz = Question.query.filter(Question.id.notin_(previous_question)).all()
             else:
-                questions = Question.query.filter(Question.category == quiz_category['id'],
+                questions_for_quiz = Question.query.filter(Question.category == quiz_category['id'],
                                                   Question.id.notin_(previous_question)).all()
 
-            questions = [question.format() for question in questions]
+            questions_for_quiz = [question.format() for question in questions_for_quiz]
 
-            if len(questions) == 0:
+            if len(questions_for_quiz) == 0:
                 abort(404)
 
-            question = random.choice(questions)
+            question = random.choice(questions_for_quiz)
 
             return jsonify({
                 'success': True,
-                'question': questions,
+                'question': questions_for_quiz,
                 'current_category': quiz_category['type']
             })
 
