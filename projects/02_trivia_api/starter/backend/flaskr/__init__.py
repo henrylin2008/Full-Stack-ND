@@ -249,7 +249,7 @@ def create_app(test_config=None):
   '''
 
     @app.route('/quizzes', methods=['POST'])
-    def retrieve_questions_for_quiz():
+    def play_quiz():
         try:
             body = request.get_json()
             previous_question = body.get('previous_questions', None)
@@ -258,18 +258,18 @@ def create_app(test_config=None):
                 questions_for_quiz = Question.query.filter(Question.id.notin_(previous_question)).all()
             else:
                 questions_for_quiz = Question.query.filter(Question.category == quiz_category['id'],
-                                                  Question.id.notin_(previous_question)).all()
+                                                           Question.id.notin_(previous_question)).all()
 
             questions_for_quiz = [question.format() for question in questions_for_quiz]
 
             if len(questions_for_quiz) == 0:
                 abort(404)
 
-            question = random.choice(questions_for_quiz)
+            random_question = random.choice(questions_for_quiz)
 
             return jsonify({
                 'success': True,
-                'question': questions_for_quiz,
+                'question': random_question,
                 'current_category': quiz_category['type']
             })
 
