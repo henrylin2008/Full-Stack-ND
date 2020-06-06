@@ -47,6 +47,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']) <= 10)
         self.assertTrue(data['categories'])
+        self.assertEqual(data['current_category'], None)
         self.assertTrue(data['total_questions'])
 
     def test_404_sent_requesting_beyond_valid_page(self):
@@ -82,6 +83,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Resource not found')
 
     def test_create_a_question(self):
+        """Test case to create a new question"""
         total_questions_before_add = len(Question.query.all())
         new_question = {
             "question": "adding a test question",
@@ -98,6 +100,40 @@ class TriviaTestCase(unittest.TestCase):
         num_of_added_question = data['total_questions'] - total_questions_before_add
         self.assertEqual(num_of_added_question, 1)
 
+    def test_search_question(self):
+        """Test case for search question"""
+        search = {
+            "searchTerm": "lake"
+        }
+        response = self.client().post('search_questions', json=search)
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['questions'])
+        self.assertEqual(data['current_category'], None)
+        self.assertTrue(data['total_questions'])
+
+    def test_retrieve_questions_by_category(self):
+        """Test case for retrieve questions by category"""
+        response = self.client().get('categories/6/questions')
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['questions'])
+        self.assertTrue(data['total_questions'])
+        self.assertTrue(data['current_category'] == 'Sports')
+
+    def test_retrieve_questions_out_of_category(self):
+        """Test case for retrieve questions outside available categories"""
+        response = self.client().get('categories/100/questions')
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(data['success'], False)
+
+    # def test_
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
