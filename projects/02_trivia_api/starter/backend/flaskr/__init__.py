@@ -248,20 +248,20 @@ def create_app(test_config=None):
     def play_quiz():
         try:
             body = request.get_json()
-            previous_question = body.get('previous_questions', None)
+            previous_questions = body.get('previous_questions', None)
             quiz_category = body.get('quiz_category', None)
             if quiz_category['id'] == 0:
-                questions_for_quiz = Question.query.filter(Question.id.notin_(previous_question)).all()
+                questions_for_quiz = Question.query.filter(Question.id.notin_(previous_questions)).all()
             else:
                 questions_for_quiz = Question.query.filter(Question.category == quiz_category['id'],
-                                                           Question.id.notin_(previous_question)).all()
+                                                           Question.id.notin_(previous_questions)).all()
 
-            questions_for_quiz = [question.format() for question in questions_for_quiz]
+            questions = [question.format() for question in questions_for_quiz]
 
-            if len(questions_for_quiz) == 0:
+            if len(questions) == 0:
                 abort(404)
 
-            random_question = random.choice(questions_for_quiz)
+            random_question = random.choice(questions)
 
             return jsonify({
                 'success': True,
@@ -300,7 +300,7 @@ def create_app(test_config=None):
             "success": False,
             "error": 405,
             "message": "Method not allowed"
-        })
+        }), 405
 
     @app.errorhandler(422)
     def unprocessable(error):
@@ -309,5 +309,13 @@ def create_app(test_config=None):
             "error": 422,
             "message": "Unprocessable"
         }), 422
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Internal server error"
+        }), 500
 
     return app
