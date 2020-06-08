@@ -107,8 +107,20 @@ def create_app(test_config=None):
 
     @app.route('/questions', methods=['GET'])
     def retrieve_questions():
-        """An endpoint
+        """An endpoint to handle GET requests '/questions'
 
+        Handling Get requests for all questions, including pagination for every 10 questions
+
+        Return:
+            a json object with:
+                "success": True
+                "questions": a list of paginated questions
+                "categories": a list of all categories' type
+                "current_category": None
+                "total_questions": total number of questions
+
+        Error handling:
+            404: Resource not found if no such a question
         """
         all_questions = Question.query.order_by(Question.id).all()
         current_questions = paginate_questions(request, all_questions)
@@ -131,16 +143,25 @@ def create_app(test_config=None):
             'total_questions': len(all_questions)
         })
 
-    '''
-  @TODO: 
-  Create an endpoint to DELETE question using a question ID. 
-
-  TEST: When you click the trash icon next to a question, the question will be removed.
-  This removal will persist in the database and when you refresh the page. 
-  '''
-
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
+        """An endpoint to handle DELETE requests '/questions/<question_id>'
+
+        Deleting a question matched with designated question ID.
+
+        Parameter:
+            question_id (int): the question id to delete
+
+        Return:
+            A json object with
+                "success": True
+                "deleted": id of deleted question
+                "total_questions": the total number of questions
+
+        Error handling:
+            404: resource not found if no such a question
+            422: unprocessable request
+        """
         try:
             question = Question.query.filter(Question.id == question_id).one_or_none()
 
@@ -175,6 +196,24 @@ def create_app(test_config=None):
 
     @app.route('/questions', methods=['POST'])
     def create_question():
+        """ An endpoint to handle POST requests for '/questions'
+
+        Parameters:
+            -question: text/strings
+            -answer: text/strings
+            -category: id of the category (1-6)
+            -difficulty: int (1-5)
+
+        Return:
+            a json object with
+                "success": True
+                "created": id of the new question
+                "current_category": type of the category selected
+                "total_questions": the total questions
+
+        Error handling:
+            422: unprocessable request
+        """
         try:
             body = request.get_json()
             category_id = body.get('category', None)
@@ -199,19 +238,23 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
-  It should return any questions for whom the search term 
-  is a substring of the question. 
-
-  TEST: Search by any phrase. The questions list will update to include 
-  only question that include that string within their question. 
-  Try using the word "title" to start. 
-  '''
-
     @app.route('/search_questions', methods=['POST'])
     def search_questions():
+        """An endpoint to handle POST requests for '/search_questions'
+
+        Get questions based on a search term; It should return any questions for whom
+        the search term is a substring of the question
+
+        Return:
+              "success": True
+              "questions": list of paginated questions
+              "current_category": None
+              "total_questions": the total number of questions
+
+        Error Handling:
+            404: Resource not found if no such a question
+            422: unprocessable request
+        """
         try:
             body = request.get_json()
             search_term = body.get('searchTerm', None)
