@@ -6,14 +6,31 @@ import random
 
 from models import setup_db, Question, Category
 
+# ----------------------------------------------------------------------------#
+# App Setup
+# ----------------------------------------------------------------------------#
+
 QUESTIONS_PER_PAGE = 10
 
 
 def paginate_questions(request, all_questions):
-    page = request.args.get('page', 1, type=int)
-    start = (page - 1) * QUESTIONS_PER_PAGE
-    end = start + QUESTIONS_PER_PAGE
+    """Paginate question by QUESTIONS_PER_PAGE
 
+    Parameters:
+        -request (obj): an instance of request_class
+        -all_questions (list): selection of questions that are queried from database
+
+    Returns:
+        -list: a paginated question list (max 10 questions per page)
+    """
+
+    # Get page from request, default to 1 if it's not provided
+    page = request.args.get('page', 1, type=int)
+    # Slice: start
+    start = (page - 1) * QUESTIONS_PER_PAGE
+    # slice: end
+    end = start + QUESTIONS_PER_PAGE
+    # Format all_questions into a list of dicts and slice
     questions = [question.format() for question in all_questions]
     current_questions = questions[start:end]
 
@@ -21,30 +38,58 @@ def paginate_questions(request, all_questions):
 
 
 def create_app(test_config=None):
-    # create and configure the app
-    ######################################################################
-    # Initial setups
-    ######################################################################
+    """ Create and configure an app 'trivia_app'
 
+    The main function of Trivia app
+    This function contains 3 parts
+        -Initial setups
+        -Endpoint functions
+        -Error handlers
+
+    """
+    # ---------------------------------------------------------------------#
+    # Initial setups
+    # ---------------------------------------------------------------------#
+    # create and configure the app
     app = Flask(__name__)
     setup_db(app)
 
-    ''' Set up CORS that allows '*' for origins.'''
+    # Set up CORS that allows '*' for origins.
     CORS(app, resources={r"/*": {"origins": "*"}})
 
-    '''Use the after_request decorator to set Access-Control-Allow'''
+    """Use the after_request decorator to set Access-Control-Allow"""
     @app.after_request
     def after_request(response):
+        """Setting Access-Control-allow
+
+        Parameters:
+            response: an instance of response_class
+
+        Return:
+            response object with Access-Control-Allow
+        """
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
         response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
         return response
 
-    ######################################################################
-    # Endpoint functions
-    ######################################################################
+    # ---------------------------------------------------------------------#
+    # Endpoints
+    # ---------------------------------------------------------------------#
 
     @app.route('/categories', methods=['GET'])
     def retrieve_categories():
+        """ An endpoint to handle GET requests '/categories'
+
+        Handling Get requests for all available categories
+
+        Return:
+            json: a json object with "categories": a list of all categories in database
+
+        ErrorHandling:
+            404: Resource not found if no question in the categories
+            422: Unprocessable request
+        """
+
         try:
             categories = Category.query.order_by(Category.id).all()
             categories = [category.type for category in categories]
@@ -60,21 +105,11 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    '''
-  @TODO: 
-  Create an endpoint to handle GET requests for questions, 
-  including pagination (every 10 questions). 
-  This endpoint should return a list of questions, 
-  number of total questions, current category, categories. 
-
-  TEST: At this point, when you start the application
-  you should see questions and categories generated,
-  ten questions per page and pagination at the bottom of the screen for three pages.
-  Clicking on the page numbers should update the questions. 
-  '''
-
     @app.route('/questions', methods=['GET'])
     def retrieve_questions():
+        """An endpoint
+
+        """
         all_questions = Question.query.order_by(Question.id).all()
         current_questions = paginate_questions(request, all_questions)
 
@@ -180,8 +215,8 @@ def create_app(test_config=None):
         try:
             body = request.get_json()
             search_term = body.get('searchTerm', None)
-            searched_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term)))\
-                                                        .order_by(Question.id).all()
+            searched_questions = Question.query.filter(Question.question.ilike('%{}%'.format(search_term))) \
+                .order_by(Question.id).all()
             current_questions = paginate_questions(request, searched_questions)
 
             if len(current_questions) == 0:
@@ -271,7 +306,40 @@ def create_app(test_config=None):
 
         except:
             abort(422)
-
+    # @app.route("/quizzes", methods=['POST'])
+    # def play_quiz_question():
+    #     '''
+    #     retrieves questions to play the quiz.
+    #     '''
+    #     if request.data:
+    #         search_key = json.loads(request.data.decode('utf-8'))
+    #         if (('quiz_category' in search_key
+    #              and 'id' in search_key['quiz_category'])
+    #                 and 'previous_questions' in search_key):
+    #             questions_query = Question.query.filter_by(
+    #                 category=search_key['quiz_category']['id']
+    #             ).filter(
+    #                 Question.id.notin_(search_key["previous_questions"])
+    #             ).all()
+    #             length_of_available_question = len(questions_query)
+    #             if length_of_available_question > 0:
+    #                 result = {
+    #                     "success": True,
+    #                     "question": Question.format(
+    #                         questions_query[random.randrange(
+    #                             0,
+    #                             length_of_available_question
+    #                         )]
+    #                     )
+    #                 }
+    #             else:
+    #                 result = {
+    #                     "success": True,
+    #                     "question": None
+    #                 }
+    #             return jsonify(result)
+    #         abort(404)
+    #     abort(422)
     '''
   @TODO: 
   Create error handlers for all expected errors 
