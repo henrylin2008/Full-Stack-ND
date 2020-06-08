@@ -183,17 +183,6 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    '''
-  @TODO: 
-  Create an endpoint to POST a new question, 
-  which will require the question and answer text, 
-  category, and difficulty score.
-    
-  TEST: When you submit a question on the "Add" tab, 
-  the form will clear and the question will appear at the end of the last page
-  of the questions list in the "List" tab.  
-  '''
-
     @app.route('/questions', methods=['POST'])
     def create_question():
         """ An endpoint to handle POST requests for '/questions'
@@ -279,17 +268,26 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    '''
-  @TODO: 
-  Create a GET endpoint to get questions based on category. 
-
-  TEST: In the "List" tab / main screen, clicking on one of the 
-  categories in the left column will cause only questions of that 
-  category to be shown. 
-  '''
-
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def retrieve_questions_by_category(category_id):
+        """An endpoint to handle GET requests for '/categories/<int:category_id>/questions'
+
+        Create a GET endpoint to get questions based on category.
+
+        Parameters:
+            category_id (int): the id of the category that retrieve a list of questions
+
+        Return:
+            a json object with
+                "success": True
+                "questions": a list of paginated questions belonged to selected category
+                "current_category": the selected category
+                "total_questions": the total number of questions
+
+        Error handling:
+            404: resource not found if no such a question
+            422: unprocessable request
+        """
         try:
             questions_by_category = Question.query.filter(Question.category == str(category_id)).order_by(
                 Question.id).all()
@@ -310,20 +308,25 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-    '''
-  @TODO: 
-  Create a POST endpoint to get questions to play the quiz. 
-  This endpoint should take category and previous question parameters 
-  and return a random questions within the given category, 
-  if provided, and that is not one of the previous questions. 
-
-  TEST: In the "Play" tab, after a user selects "All" or a category,
-  one question at a time is displayed, the user is allowed to answer
-  and shown whether they were correct or not. 
-  '''
-
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
+        """An endpoint to handle POST request for '/quizzes'
+
+        Getting questions to play the quiz. This endpoint should
+        take category and previous question parameters and return
+        a random questions within the given category, if provided,
+        and that is not one of the previous questions.
+
+        Return:
+            a json object with:
+                "success": True
+                "question": random selection of the question
+                "current_category": current selected question
+
+        Error handling:
+            404: resource not found if no such a question
+            422: unprocessable request
+        """
         try:
             body = request.get_json()
             previous_questions = body.get('previous_questions', None)
@@ -383,12 +386,10 @@ def create_app(test_config=None):
     #             return jsonify(result)
     #         abort(404)
     #     abort(422)
-    '''
-  @TODO: 
-  Create error handlers for all expected errors 
-  including 404 and 422. 
-  '''
 
+    # ---------------------------------------------------------------------#
+    # Error Handlers
+    # ---------------------------------------------------------------------#
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
