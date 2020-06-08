@@ -63,12 +63,12 @@ class TriviaTestCase(unittest.TestCase):
     def test_delete_question(self):
         """Test case to delete a question"""
         total_questions_before_delete = len(Question.query.all())
-        response = self.client().delete('/questions/6')
+        response = self.client().delete('/questions/25')
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 6)
+        self.assertEqual(data['deleted'], 25)
         deleted_question = total_questions_before_delete - data['total_questions']
         self.assertEqual(deleted_question, 1)
 
@@ -133,7 +133,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(data['success'], False)
 
-    # def test_
+    def test_play_quiz(self):
+        """Test case for play quiz"""
+        response = self.client().post(
+            'quizzes', data=json.dumps({
+                "previous_questions": ['10'],
+                "quiz_category": {"type": "Sports", "id": "6"},
+            }),
+            content_type='application/json'
+        )
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['question'])
+        self.assertTrue(data['current_category'])
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
