@@ -78,7 +78,7 @@ def create_app(test_config=None):
 
     @app.route('/categories', methods=['GET'])
     def retrieve_categories():
-        """ An endpoint to handle GET requests '/categories'
+        """ An endpoint to handle GET requests for '/categories'
 
         Handling Get requests for all available categories
 
@@ -89,7 +89,6 @@ def create_app(test_config=None):
             404: Resource not found if no question in the categories
             422: Unprocessable request
         """
-
         try:
             categories = Category.query.order_by(Category.id).all()
             categories = [category.type for category in categories]
@@ -107,9 +106,9 @@ def create_app(test_config=None):
 
     @app.route('/questions', methods=['GET'])
     def retrieve_questions():
-        """An endpoint to handle GET requests '/questions'
+        """An endpoint to handle GET requests for '/questions'
 
-        Handling Get requests for all questions, including pagination for every 10 questions
+        Handling Get requests for all questions, including pagination every 10 questions
 
         Return:
             a json object with:
@@ -145,7 +144,7 @@ def create_app(test_config=None):
 
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
-        """An endpoint to handle DELETE requests '/questions/<question_id>'
+        """An endpoint to handle DELETE requests for '/questions/<question_id>'
 
         Deleting a question matched with designated question ID.
 
@@ -275,7 +274,7 @@ def create_app(test_config=None):
         Create a GET endpoint to get questions based on category.
 
         Parameters:
-            category_id (int): the id of the category that retrieve a list of questions
+            category_id (int): the id of the category that retrieves a list of questions
 
         Return:
             a json object with
