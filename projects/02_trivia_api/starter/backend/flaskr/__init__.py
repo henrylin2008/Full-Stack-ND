@@ -317,6 +317,10 @@ def create_app(test_config=None):
         a random questions within the given category, if provided,
         and that is not one of the previous questions.
 
+        Parameters:
+            previous_questions = previous questions
+            quiz_category = category of current question
+
         Return:
             a json object with:
                 "success": True
@@ -352,40 +356,6 @@ def create_app(test_config=None):
 
         except:
             abort(422)
-    # @app.route("/quizzes", methods=['POST'])
-    # def play_quiz_question():
-    #     '''
-    #     retrieves questions to play the quiz.
-    #     '''
-    #     if request.data:
-    #         search_key = json.loads(request.data.decode('utf-8'))
-    #         if (('quiz_category' in search_key
-    #              and 'id' in search_key['quiz_category'])
-    #                 and 'previous_questions' in search_key):
-    #             questions_query = Question.query.filter_by(
-    #                 category=search_key['quiz_category']['id']
-    #             ).filter(
-    #                 Question.id.notin_(search_key["previous_questions"])
-    #             ).all()
-    #             length_of_available_question = len(questions_query)
-    #             if length_of_available_question > 0:
-    #                 result = {
-    #                     "success": True,
-    #                     "question": Question.format(
-    #                         questions_query[random.randrange(
-    #                             0,
-    #                             length_of_available_question
-    #                         )]
-    #                     )
-    #                 }
-    #             else:
-    #                 result = {
-    #                     "success": True,
-    #                     "question": None
-    #                 }
-    #             return jsonify(result)
-    #         abort(404)
-    #     abort(422)
 
     # ---------------------------------------------------------------------#
     # Error Handlers
