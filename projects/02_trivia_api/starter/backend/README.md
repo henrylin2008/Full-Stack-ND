@@ -66,21 +66,30 @@ One note before you delve into your tasks: for each endpoint you are expected to
 8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions. 
 9. Create error handlers for all expected errors including 400, 404, 422 and 500. 
 
-REVIEW_COMMENT
-```
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
+## API Reference
+Getting Started
+- Backend Base URL: http://127.0.0.1:5000/
+- Frontend Base URL: http://localhost:3000
 
-GET '/categories'
+## Testing
+To run the tests, run
+```
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
+
+### Endpoints 
+
+#### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
 - Sample: curl http://127.0.0.1:5000/categories
-
-{ "categories": [
+```
+{ 
+  "categories": [
     {
      '1' : "Science",
      '2' : "Art",
@@ -93,25 +102,14 @@ GET '/categories'
  "success": true, 
  "categories": 6
 }
+```
 
-Error Handling: 
-{   
-    "success": False, 
-    "error": 404, 
-    "message": "Resource not found"
-}
-
-The API will return two error types when requests fail: 
-    - 404: Resource not found 
-    - 422: Not Processable
-
-
-
-GET '/questions'
+#### GET '/questions'
 - Fetches a list of question objects, total number of questions, and the category that question belongs to
-- Results are paginated in groups of 10. Include a reuqest argument to choose page number, starting from 1
+- Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1
 - Sample: curl http://127.0.0.1:5000/questions
 
+```
 { "questions": [
     {
       "answer": "Apollo 13", 
@@ -187,24 +185,15 @@ GET '/questions'
   "success": true, 
   "total_questions": 39
 }
-
-Error Handling: 
-{   
-    "success": False, 
-    "error": 404, 
-    "message": "Resource not found"
-}
-
-The API will return one error when requests fail: 
-    - 404: Resource not found 
+```
 
 
-
-DELETE /questions/<int:question_id>
--Deleting a question matched with designated question ID of it exists. Returns the id of the deleted question, success 
- value, and total questions. 
+#### DELETE /questions/<int:question_id>
+- Deleting a question matched with designated question ID of it exists. 
+- Returns the id of the deleted question, success value, and total questions. 
 - Sample: curl -X DELETE http://127.0.0.1:5000/questions/21
 
+```
 {
    "questions": [
         {
@@ -219,25 +208,14 @@ DELETE /questions/<int:question_id>
   "success": true, 
   "total_questions": 38
 }
+```
 
-Error Handling: 
-{   
-    "success": False, 
-    "error": 404, 
-    "message": "Resource not found"
-}
-
-The API will return two error types when requests fail: 
-    - 404: Resource not found 
-    - 422: Not Processable
-
-
-POST /questions
-- Creates a new question with the question, answer, difficulty, and category. Returns the id of the question, current 
-  category, success value, and total questions
+#### POST /questions
+- Creates a new question with the question, answer, difficulty, and category. 
+- Returns the id of the question, current category, success value, and total questions
 - Sample: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d 
 '{"question":"new question", "answer":"answer", "difficulty":"1", "category":"6"}'
-
+```
 {
    "questions": [
         {
@@ -253,24 +231,112 @@ POST /questions
    "success": true, 
    "total_questions": 38
 }
+```
 
-Error Handling: 
+#### POST /search_questions
+- This endpoint to get questions based on a search term. It should return any questions for whom the search term is a 
+  substring of the question.
+- Returns success value, total number of questions
+- Sample: curl http://127.0.0.1:5000/search_questions -X POST -H "Content-Type: application/json" -d '{"searchTerm":"movie"}'
+
+```
+{
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 39
+}
+```
+
+#### GET /categories/<int:category_id>/questions
+- This endpoint GET questions based on the category. It should return current category, questions in this category, 
+  success value, and total questions
+- Returns success value, and total number of questions 
+- Sample: curl 127.0.0.1:5000/categories/1/questions
+```
+{
+  "current_category": "Science", 
+  "questions": [
+    {
+      "answer": "The Liver", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 20, 
+      "question": "What is the heaviest organ in the human body?"
+    }, 
+    {
+      "answer": "Alexander Fleming", 
+      "category": 1, 
+      "difficulty": 3, 
+      "id": 21, 
+      "question": "Who discovered penicillin?"
+    }, 
+    {
+      "answer": "Blood", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 22, 
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    }
+  ], 
+  "success": true, 
+  "total_questions": 39
+}
+```
+
+#### POST /quizzes
+- Getting questions to play the quiz. This endpoint should take category and previous question parameters and return
+  a random questions within the given category, if provided, and that is not one of the previous questions.
+- Returns: multiple key/value pairs object with the following content: 
+    * success: True or False 
+    * question: random question from the list of available questions in the category/categories, which it contains
+                details about the question: answer, category, difficulty, id, and question content
+    * current_category: the category type of current question
+```
+{
+  "question": {
+    "answer": "Alexander Fleming", 
+    "category": 1, 
+    "difficulty": 3, 
+    "id": 21, 
+    "question": "Who discovered penicillin?"
+  }, 
+  "success": true,
+  "question": [
+    {
+      "answer": "The Liver", 
+      "category": 1, 
+      "difficulty": 4, 
+      "id": 20, 
+      "question": "What is the heaviest organ in the human body?"
+    }
+  ],
+  "current_category": "Science" 
+}
+```
+
+### Error Handling
+```
+Errors are returned as JSON objects in the following format:
 {   
     "success": False, 
     "error": 422, 
     "message": "Unprocessable"
 }
-
-The API will return two error types when requests fail: 
-    - 422: Not Processable
-
 ```
+The API will return five error types when requests fail: 
+- 400: Bad Request
+- 404: Resource Not Found
+- 405: Method Not Allowed
+- 422: Not Processable
+- 500: Internal Server Error
 
-## Testing
-To run the tests, run
-```
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python test_flaskr.py
-```
+
