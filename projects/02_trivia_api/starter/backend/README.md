@@ -188,7 +188,7 @@ python test_flaskr.py
 ```
 
 
-#### DELETE /questions/<int:question_id>
+#### DELETE /questions/{question_id}
 - Deleting a question matched with designated question ID of it exists. 
 - Returns the id of the deleted question, success value, and total questions. 
 - Sample: curl -X DELETE http://127.0.0.1:5000/questions/21
@@ -256,7 +256,7 @@ python test_flaskr.py
 }
 ```
 
-#### GET /categories/<int:category_id>/questions
+#### GET /categories/{category_id}/questions
 - This endpoint GET questions based on the category. It should return current category, questions in this category, 
   success value, and total questions
 - Returns success value, and total number of questions 
