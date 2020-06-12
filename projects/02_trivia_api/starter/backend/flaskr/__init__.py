@@ -341,18 +341,19 @@ def create_app(test_config=None):
                                                            Question.id.notin_(previous_questions)).all()
 
             questions = [question.format() for question in questions_for_quiz]
-
-            if len(questions) == 0:
-                abort(404)
-
             random_question = random.choice(questions)
 
-            return jsonify({
-                'success': True,
-                'question': random_question,
-                'current_category': quiz_category['type']
-            })
-
+            if len(questions) > 0:
+                return jsonify({
+                    'success': True,
+                    'question': random_question,
+                    'current_category': quiz_category['type']
+                }), 200
+            else:
+                return jsonify({
+                    'success': True,
+                    'question': None
+                }), 404
         except:
             abort(422)
 
@@ -365,7 +366,7 @@ def create_app(test_config=None):
             "success": False,
             "error": 400,
             "message": "Bad request"
-        })
+        }), 400
 
     @app.errorhandler(404)
     def not_found(error):
