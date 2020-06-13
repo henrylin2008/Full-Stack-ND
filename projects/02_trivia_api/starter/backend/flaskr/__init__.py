@@ -341,9 +341,12 @@ def create_app(test_config=None):
                                                            Question.id.notin_(previous_questions)).all()
 
             questions = [question.format() for question in questions_for_quiz]
+            if len(questions) == 0:
+                abort(404)
+
             random_question = random.choice(questions)
 
-            if len(questions) > 0:
+            if random_question:
                 return jsonify({
                     'success': True,
                     'question': random_question,
@@ -353,7 +356,7 @@ def create_app(test_config=None):
                 return jsonify({
                     'success': True,
                     'question': None
-                }), 404
+                }), 200
         except:
             abort(422)
 
