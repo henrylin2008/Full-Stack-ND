@@ -1,3 +1,4 @@
+import json
 import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -324,42 +325,45 @@ def create_app(test_config=None):
             a json object with:
                 "success": True
                 "question": random selection of the question
-                "current_category": current selected question
 
         Error handling:
             404: resource not found if no such a question
             422: unprocessable request
         """
-        try:
-            body = request.get_json()
-            previous_questions = body.get('previous_questions', None)
-            quiz_category = body.get('quiz_category', None)
-            if quiz_category['id'] == 0:
-                questions_for_quiz = Question.query.filter(Question.id.notin_(previous_questions)).all()
-            else:
-                questions_for_quiz = Question.query.filter(Question.category == quiz_category['id'],
-                                                           Question.id.notin_(previous_questions)).all()
+        if request.data:
+            search_key = json.loads(request.data.decode('utf-8'))
+            if (('quiz_category' in search_key and 'id' in search_key['quiz_category'])
+                    and 'previous_questions' in search_key):
 
-            questions = [question.format() for question in questions_for_quiz]
-            if len(questions) == 0:
-                abort(404)
+                if search_key['quiz_category']['id'] == 0:
+                    questions_query = Question.query.filter(
+                        Question.id.notin_(search_key["previous_questions"])
+                    ).all()
+                else:
+                    questions_query = Question.query.filter_by(
+                        category=search_key['quiz_category']['id']).filter(
+                        Question.id.notin_(search_key["previous_questions"])
+                    ).all()
 
-            random_question = random.choice(questions)
-
-            if random_question:
-                return jsonify({
-                    'success': True,
-                    'question': random_question,
-                    'current_category': quiz_category['type']
-                }), 200
-            else:
-                return jsonify({
-                    'success': True,
-                    'question': None
-                }), 200
-        except:
-            abort(422)
-
+                length_of_available_questions = len(questions_query)
+                if length_of_available_questions > 0:
+                    result = {
+                        "success": True,
+                        "question": Question.format(
+                            questions_query[random.randrange(
+                                0,
+                                length_of_available_questions
+                            )]
+                        )
+                    }
+                else:
+                    result = {
+                        "success": True,
+                        "question": None
+                    }
+                return jsonify(result)
+            abort(404)
+        abort(422)
     # ---------------------------------------------------------------------#
     # Error Handlers
     # ---------------------------------------------------------------------#
