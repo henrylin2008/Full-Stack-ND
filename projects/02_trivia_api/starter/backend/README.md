@@ -241,7 +241,6 @@ python test_flaskr.py
 
 ```
 {
-  "current_category": null, 
   "questions": [
     {
       "answer": "Apollo 13", 
@@ -299,7 +298,6 @@ python test_flaskr.py
     * success: True or False 
     * question: random question from the list of available questions in the category/categories, which it contains
                 details about the question: answer, category, difficulty, id, and question content
-    * current_category: the category type of current question
 ```
 {
   "question": {
@@ -319,7 +317,6 @@ python test_flaskr.py
       "question": "What is the heaviest organ in the human body?"
     }
   ],
-  "current_category": "Science" 
 }
 ```
 
