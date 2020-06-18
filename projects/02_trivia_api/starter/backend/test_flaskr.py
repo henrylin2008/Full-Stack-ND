@@ -96,7 +96,7 @@ class TriviaTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(data['created'])
+        self.assertTrue(data['question_id'])
         num_of_added_question = data['total_questions'] - total_questions_before_add
         self.assertEqual(num_of_added_question, 1)
 
@@ -111,7 +111,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['questions'])
-        self.assertEqual(data['current_category'], None)
         self.assertTrue(data['total_questions'])
 
     def test_retrieve_questions_by_category(self):
