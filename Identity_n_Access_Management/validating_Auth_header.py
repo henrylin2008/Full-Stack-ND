@@ -24,10 +24,9 @@ def requires_auth(f):
 
 app = Flask(__name__)
 
-@app.route('/headers')
+@app.route('/headers') #@app.route('/myapp')
 @requires_auth
-def headers():
-	jwt = get_token_auth_header()
+def headers(jwt):	#def myapp(jwt)
 	print(jwt)
 	return "not implemented"
 
