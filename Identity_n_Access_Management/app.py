@@ -4,7 +4,6 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-
 app = Flask(__name__)
 
 AUTH0_DOMAIN = 'dev-wmig32c8.us.auth0.com'
@@ -100,25 +99,38 @@ def verify_decode_jwt(token):
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
-                'description': 'Unable to find the appropriate key.'
-            }, 400)
+        'code': 'invalid_header',
+        'description': 'Unable to find the appropriate key.'
+    }, 400)
 
 
-def requires_auth(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        token = get_token_auth_header()
-        try:
-            payload = verify_decode_jwt(token)
-        except:
-            abort(401)
-        return f(payload, *args, **kwargs)
+def check_permissions(permission, payload):
+    if 'permissions' not in payload:
+        abort(400)
+    if permission not in payload['permissions']:
+        abort(403)
+    return True
 
-    return wrapper
+
+def requires_auth(permission=''):
+    def requires_auth_decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            token = get_token_auth_header()
+            try:
+                payload = verify_decode_jwt(token)
+            except:
+                abort(401)
+
+            check_permissions(permission, payload)
+
+            return f(payload, *args, **kwargs)
+        return wrapper
+    return requires_auth_decorator
+
 
 @app.route('/headers')
-@requires_auth
+@requires_auth('get:images')
 def headers(payload):
     print(payload)
     return 'Access Granted'
