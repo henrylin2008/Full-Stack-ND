@@ -27,14 +27,14 @@ def get_token_auth_header():
             'description': 'Authorization header is expected.'
         }, 401)
 
-    parts = auth.split()
-    if parts[0].lower() != 'bearer':
+    parts = auth.split() # split the auth part
+    if parts[0].lower() != 'bearer': # if first index is not 'bearer', raise 401
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization header must start with "Bearer".'
         }, 401)
 
-    elif len(parts) == 1:
+    elif len(parts) == 1: 
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Token not found.'
@@ -46,22 +46,30 @@ def get_token_auth_header():
             'description': 'Authorization header must be bearer token.'
         }, 401)
 
-    token = parts[1]
-    return token
+    token = parts[1] # header part 
+    return token 
 
 
 def verify_decode_jwt(token):
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
-    jwks = json.loads(jsonurl.read())
-    unverified_header = jwt.get_unverified_header(token)
+    jwks = json.loads(jsonurl.read()) # body of json file, array of keys 
+                               # {'keys': [{'alg': 'RS256',
+                               # 'kty': 'RSA',
+                               # 'use': 'sig',
+                               # 'x5c': [adsfasf]
+                               # 'kid': 'NzgyRTVDRjJCQkRBRDcwN0QxRTA1OUIyRTNFODAxOTc0Njc5OTJEOA',}]}
+    unverified_header = jwt.get_unverified_header(token) # unpack jwt header and verify the kid id in the header, and validate
+    # {'typ': 'JWT',
+    # 'alg': 'RS256',
+    # 'kid': 'NzgyRTVDRjJCQkRBRDcwN0QxRTA1OUIyRTNFODAxOTc0Njc5OTJEOA'}
     rsa_key = {}
-    if 'kid' not in unverified_header:
+    if 'kid' not in unverified_header: # if 'kid' not in the header, raise 401 error 
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization malformed.'
         }, 401)
 
-    for key in jwks['keys']:
+    for key in jwks['keys']: # if 'kid' in jwks
         if key['kid'] == unverified_header['kid']:
             rsa_key = {
                 'kty': key['kty'],
@@ -70,8 +78,17 @@ def verify_decode_jwt(token):
                 'n': key['n'],
                 'e': key['e']
             }
-    if rsa_key:
+    if rsa_key: # if we have rsa_key
         try:
+        # USE THE KEY TO VALIDATE THE JWT
+        # {'iss': 'https://fsnd.auth0.com/',
+        # 'sub': 'auth0|5d03d3e6726b8f0cb4bf71c9',
+        # 'aud': 'image',
+        # 'iat': 1560556174,
+        # 'exp': 1560563374,
+        # 'azp': 'ki4B6jZkuJd87bpB2Mw8zdkj1l3ofpzj',
+        # 'scope': '',
+        # 'permissions': ['get:images', 'post:images']}
             payload = jwt.decode(
                 token,
                 rsa_key,
