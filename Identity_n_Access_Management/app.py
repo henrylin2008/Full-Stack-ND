@@ -122,14 +122,14 @@ def verify_decode_jwt(token):
 
 
 def check_permissions(permission, payload):
-    if 'permissions' not in payload:
+    if 'permissions' not in payload: # ensure payload contains 'permissions' key 
         abort(400)
-    if permission not in payload['permissions']:
+    if permission not in payload['permissions']: # if permission exists in payload['permissions'] array 
         abort(403)
     return True
 
 
-def requires_auth(permission=''):
+def requires_auth(permission=''): # single permission string, default to empty string 
     def requires_auth_decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
